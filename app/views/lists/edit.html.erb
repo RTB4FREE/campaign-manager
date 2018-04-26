@@ -1,0 +1,120 @@
+
+
+<% content_for :main_body do %>
+    <style type="text/css">
+	.hideme,file {
+		display:none;
+	}    
+    </style>
+       <br/><br/>
+		<%= form_for @list, url: {action: "update"}, :html=> {:class=>"form-horizontal"}  do  |f| %>
+          <fieldset>
+            <%= f.hidden_field :id %>
+          <div class="form-group"> 
+            <label class="col-sm-2 control-label">Name
+            <span class="icon fa fa-question-circle" 
+                title="Shown when you select a list in Process places and Messenger template. You can rename this to something more friendly.">
+            </span>
+            </label>    
+            <div class="col-sm-10">
+                <%= f.text_field :name ,  class: "form-control"%>
+            </div>
+          </div>
+
+          <div class="form-group"> 
+            <label class="col-sm-2 control-label">Set Type</label>    
+            <div class="col-sm-10">
+                 <%= f.select :list_type, ListTypes.all.collect { |v| [ "#{v[:label]} - #{v[:description]}", v[:name] ] }, { include_blank: false } , {class: "form-control input-sm select2 nosearch"}%>
+            </div>
+          </div>
+
+          <div class="form-group"> 
+            <label class="col-sm-2 control-label">Description
+                <span class="icon fa fa-question-circle" 
+                    title="For your notes only. Not used in bot processing.">
+                </span>
+            </label>    
+            <div class="col-sm-10">
+                <%= f.text_field :description ,  class: "form-control"%>
+            </div>
+          </div>
+          <div class="form-group"> 
+            <label class="col-sm-2 control-label"></label>    
+            <div class="col-sm-10">
+              <button type="f.submit" class="btn btn-primary btn-sm">Update Media Attributes</button>
+              <a class="btn btn-default btn-sm" href="/list/index">Cancel</a>
+            </div>
+          </div>
+
+
+          <div class="form-group"> 
+            <label class="col-sm-2 control-label">Type</label>    
+            <div class="col-sm-10">
+                <%= f.text_field :filetype ,  class: "form-control", :readonly => true %>
+            </div>
+          </div>
+          <div class="form-group"> 
+            <label class="col-sm-2 control-label">Size</label>    
+            <div class="col-sm-10">
+                <%= f.text_field :filesize ,  class: "form-control", :readonly => true %>
+            </div>
+          </div>
+          <div class="form-group"> 
+            <label class="col-sm-2 control-label">Modified</label>    
+            <div class="col-sm-10">
+                <%= f.text_field :last_modified ,  class: "form-control", :readonly => true %>
+            </div>
+          </div>
+
+          <div class="form-group"> 
+            <label class="col-sm-2 control-label">URL
+                <span class="icon fa fa-question-circle" 
+                    title="Uploaded list files are served by Text2.Me content system. This URL is used in list references for API calls.">
+                </span>            
+            </label>    
+            <div class="col-sm-10">
+                <%= f.text_field :s3_url ,  class: "form-control", :readonly => true %>
+            </div>
+            <%= f.hidden_field :filepath %>
+          </div>
+          
+
+      <% end %>
+
+
+<% end %>   
+
+
+
+<% content_for :javascript do %>  
+
+    <script type="text/javascript">
+        $.ajaxSetup({
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRF-Token',
+                                     $('meta[name="csrf-token"]').attr('content'));
+            }
+        });
+        $(document).ready(function() {
+            $('a[href="' + this.location.pathname + '"]').parents(".tapsidenavitem").addClass('active');         
+    		$('#tapin-navbar-header-breadcrumb').append('<li>My Resources</li><li>Media</li><li class="active">Edit</li>');        
+            $('.nav-tabs a:first').tab('show');
+            $('.nav-tabs a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+	       $(".select2").select2({
+        			placeholder: '- select -',
+        			minimumResultsForSearch: Infinity,
+        			width: '100%'			
+        	})
+        });
+    </script>
+
+
+
+<% end %>
+
+
+
+

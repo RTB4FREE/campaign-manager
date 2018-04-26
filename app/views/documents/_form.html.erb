@@ -1,0 +1,43 @@
+<style>
+	#editor_container { 
+		border: 1px;
+		border-radius: 6px 6px 6px 6px;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);	
+		width:100%; 
+		height:400px;	
+		padding: 0.5em;
+	}
+	#editor { 
+		position:relative;
+		width:100%; 
+		height:100%;
+	}		
+</style>
+
+<%= bootstrap_form_for(@document, layout: :horizontal, label_col: "col-sm-1", control_col: "col-sm-11") do |f| %>
+  <% if @document.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@document.errors.count, "error") %> prohibited this document from being saved:</h2
+      <ul>
+      <% @document.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= f.text_field :name, label: "Name" , class: "input-sm" %>
+  <%= f.text_field :description, class: "input-sm" %>
+  <%= f.hidden_field :doctype, value: "html" %>
+  <%= f.collection_select(:category_ids, Category.order(:name), :id, :name, {label: "Categories"},
+    {:multiple => true, class: "search_categories form-control" }) %>  
+	  <span style="display:none"><%= f.text_area :code, label: " " %></span>
+	  
+    <%= f.submit  class: "btn btn-default btn-sm" %>
+    <%= link_to 'Cancel', documents_path , class: "btn btn-default btn-sm" %> 
+  
+	<div id="editor_container">
+		<div name="editor" id="editor"></div>
+	</div>  
+  
+<% end %>
+

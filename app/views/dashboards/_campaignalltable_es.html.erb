@@ -1,0 +1,153 @@
+<style>
+    .col_1hr {
+      background-color: #dff0d8;
+    }
+    .col_8hr {
+      background-color: #d9edf7;
+    }
+    .col_24hr {
+      background-color: #fcf8e3;
+    }
+    .col_all {      
+      background-color: #f2dede;
+    }
+    a:focus { color: green !important; }
+     .panel-body {
+        overflow: scroll;
+     } 
+</style>
+
+<div class="panel panel-pink">
+    <div class="panel-heading">Region <%=region%> Campaign Summaries</div>
+    <div class="panel-body">
+        <table class="table table-hover listtable" id="listtable">
+         
+      
+            <thead>
+        
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th colspan="5" class="col_1hr">Last 1 hour</th>
+                <th colspan="5" class="col_8hr">Last 8 hours</th>
+                <th colspan="5" class="col_24hr">Last 24 hours</th>
+                <th colspan="5" class="col_all">All History</th>
+            </tr>
+        
+            <tr>
+                <th>ID</th>
+                <th>Line</th>
+                <th>Status</th>
+                <% @timeframe_col_labels.each do |timelabel| %>                    
+                    <th><%=timelabel%> Clicks</th>
+                    <th><%=timelabel%> Pixels</th>
+                    <th><%=timelabel%> Wins</th>
+                    <th><%=timelabel%> Bids</th>
+                    <th><%=timelabel%> Spend</th>
+                <%end%>
+            </tr>
+
+            </thead>
+            <tbody>
+        
+        <% totals = {}%>
+        <%  Campaign.all.each do |camp| 
+            next if camp.regions.to_s !~ /#{region}/            
+            name = camp.name
+            status  = camp.status.to_s.camelcase
+            if status.eql?("Offline") 
+                sev = "danger"
+            else
+                sev = "success"
+            end
+            %>
+            <tr>
+                <td><%=camp.id%></td>
+                <td>
+                    <%= link_to name,dashboards_campaigndetail_path(id:camp.id)%>
+                </td>
+                <td>
+                     <span class="text text-<%=sev%>"><%=status%></span>
+                    <% 
+                        if camp and errors = camp.check_errors and errors.length>0
+                             str = errors.join("\n")
+                    %>
+                              &nbsp;&nbsp;
+                              <a href="#" data-toggle="popover"  data-trigger="hover"  title="Alert" data-content="<%=raw(str)%>">
+                              <span class="glyphicon glyphicon-alert" style="color:red"></span>
+                              </a>
+                    <%end%>
+                </td>                   
+
+                <% @timeframes.keys.each do |timelabel| %>
+                    <%
+                       
+                       # puts "\nbid obj #{ bids[timelabel].inspect } \n"
+                        aggClicksObj = clicks[timelabel].find{|b| b["key"].to_s.eql?(camp.id.to_s) } if not clicks[timelabel].nil?                      
+                        aggClicksObj ||= {"3"=>{},"doc_count"=>0}
+                        aggPixelsObj = pixels[timelabel].find{|b| b["key"].to_s.eql?(camp.id.to_s) } if not pixels[timelabel].nil?                      
+                        aggPixelsObj ||= {"3"=>{},"doc_count"=>0}
+                        aggBidsObj = bids[timelabel].find{|b| b["key"].to_s.eql?(camp.id.to_s) } if not bids[timelabel].nil?                      
+                        aggBidsObj ||= {"3"=>{},"doc_count"=>0}
+                        aggWinsObj = wins[timelabel].find{|b| b["key"].to_s.eql?(camp.id.to_s) } if not wins[timelabel].nil?
+                        aggWinsObj ||= {"3"=>{},"doc_count"=>0}
+                        
+                        totals[timelabel] ||= {}
+                        totals[timelabel][:clickcount] ||= 0 
+                        totals[timelabel][:pixelcount] ||= 0 
+                        totals[timelabel][:wincount] ||= 0 
+                        totals[timelabel][:bidcount] ||= 0 
+                        totals[timelabel][:wincost] ||= 0 
+                        
+                        # Get this from local elasticsearch, not mysql
+                        #if timelabel.to_s.eql?("all_history")
+                        #    aggWinsObj["3"]["value"] = camp.cost.to_f * 1000
+                        #end
+                        totals[timelabel][:clickcount] += aggClicksObj["doc_count"] 
+                        totals[timelabel][:pixelcount] += aggPixelsObj["doc_count"] 
+                        totals[timelabel][:wincount] += aggWinsObj["doc_count"] 
+                        totals[timelabel][:bidcount] += aggBidsObj["doc_count"] 
+                        totals[timelabel][:wincost] += aggWinsObj["3"]["value"].to_f 
+                    %>
+                    <td><%=number_with_delimiter(aggClicksObj["doc_count"])%></td>
+                    <td><%=number_with_delimiter(aggPixelsObj["doc_count"])%></td>
+                    <td><%=number_with_delimiter(aggWinsObj["doc_count"])%></td>
+                    <td><%=number_with_delimiter(aggBidsObj["doc_count"])%></td>
+                    <td><%=number_to_currency(aggWinsObj["3"]["value"].to_f/1000)%></td>                    
+                <%end%>
+                           
+            </tr>
+        <%end%>
+        <!--
+            <tr>
+            
+                <td colspan="<%=@timeframes.keys.length+2%>"></td>
+                
+                
+            </tr>
+                        
+            <tr>
+                <th></th>
+                <th>TOTALS</th>
+                <th></th>        
+                <% @timeframes.keys.each do |timelabel| %>
+                <%  totals ||= {}
+                    totals[timelabel] ||= {}
+                    totals[timelabel][:pixelcount] ||= 0
+                    totals[timelabel][:wincount] ||= 0 
+                    totals[timelabel][:bidcount] ||= 0 
+                    totals[timelabel][:wincost] ||= 0 
+                %>
+                    <td><%=number_with_delimiter(totals[timelabel][:pixelcount])%></td>
+                    <td><%=number_with_delimiter(totals[timelabel][:wincount])%></td>
+                    <td><%=number_with_delimiter(totals[timelabel][:bidcount])%></td>
+                    <td><%=number_to_currency(totals[timelabel][:wincost]/1000)%></td>
+                <%end%>            
+            </tr>   
+    -->
+            </tbody>
+        </table>
+    </div>
+</div>
+

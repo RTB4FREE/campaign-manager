@@ -1,0 +1,62 @@
+<% content_for :breadcrumb do %> 
+       <div class="page-header pull-left">
+            <div class="page-title">
+                Real Time Bidder Dashboard 
+            </div>
+        </div>
+        <ol class="breadcrumb page-breadcrumb pull-right">
+            <li><i class="fa fa-home"></i>&nbsp;<a href="/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li class="active">Dashboard</li>
+        </ol>
+<%end%>
+
+<% content_for :main_body do %> 
+<div class="page-content">
+    <div id="tab-general">
+        <%= form_tag dashboards_home_path, method: "get" do %>        
+            <input type="hidden" name="refresh" value="1"/>
+            <div class="col-lg-12 pull-left">
+                <button type="submit" class="btn btn-default btn-sm">Refresh</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <% if not @refresh %>
+                    <h5>Hit Refresh button to get show Dashboard statistics</h5>
+                <%else%>
+                    <span id="load_time"></span>
+                <%end%>
+                <br/> <br/>
+            </div>            
+            <% if @refresh %>
+            
+                <%@campaign_wins.keys.each do |region| %>
+            
+                <div class="col-lg-12">
+                    <%= render :partial => 'bidderalltable_es',
+                                :locals => {
+                                    :region => region,
+                                    :bidder_status => @bidder_status[region]
+                                }                            
+                    %>  
+                </div>            
+                <div class="col-lg-12">
+                    <%= render :partial => 'campaignalltable_es', 
+                                :locals => {
+                                    :region => region,
+                                    :pixels => @campaign_pixels[region],
+                                    :wins => @campaign_wins[region],
+                                    :bids => @campaign_bids[region],
+                                    :clicks => @campaign_clicks[region],
+                                }
+                    %>  
+                </div> 
+                <%end%>
+            <%end%>
+        
+
+        <%end%>
+    </div>
+</div> 
+    
+
+
+<%end%>
+

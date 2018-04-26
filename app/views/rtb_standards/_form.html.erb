@@ -1,0 +1,49 @@
+
+
+<%= bootstrap_form_for(@rtb_standard,layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
+  <% if @rtb_standard.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@rtb_standard.errors.count, "error") %> prohibited this rule from being saved:</h2
+      <ul>
+      <% @rtb_standard.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= f.text_field :name, label: "Rule Name" , class: "input-sm" %>
+  <%= f.text_field :id, label: "Rule ID" , class: "input-sm", readonly: true %>
+  <%= f.text_area :description, label: "Description" , class: "input-sm" %>
+
+  <%= f.select :rtbspecification, 
+        ExchangeRtbspecs.order("rtbspecification").collect { |v|
+          [ v[:rtbspecification], v[:rtbspecification] , {:operand_type =>v[:operand_type], :operand_ordinal =>v[:operand_ordinal] }] 
+          }.unshift(["",""]),          # Push blank option to allow placeholder on new init
+          {},{class: "input-sm select2_single form-control"} 
+  %>  
+
+  <%= f.select :operator, RtbStandardOperator.all.collect { |v| [ v[:name], v[:name] ] },{ include_blank: true}, {class: "input-sm nosearch"} %>  
+  
+  <%= f.text_field :operand, label:"Operand value", class: 'input-sm' %>
+  <%= f.select :operand_list_id, List.all.collect { |v| [ v[:name], v[:id] ] },{ label: "Use Set as Operand",include_blank: true}, {class: "input-sm search"} %>  
+
+  <%= f.select :operand_type, [ ["Integer","I"],["String","S"],["Double","D"] ] ,{ "include_blank" => true}, 
+      {class: "input-sm nosearch" } %> 
+  <%= f.select :operand_ordinal, [ ["Scalar","S"],["List","L"] ] ,{ include_blank: true}, {class: "input-sm nosearch"} %> 
+
+
+
+  <div class="form-group"><label class="control-label col-sm-2" for="user_admin">RTB Required</label>
+    <div class="col-sm-10">
+        <%= f.check_box :rtb_required, label: ""  %>
+    </div>
+  </div>  
+  <div class="actions">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-default btn-sm">Update</button>
+    </div>
+  </div>  
+  
+<% end %>

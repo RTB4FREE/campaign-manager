@@ -1,0 +1,55 @@
+
+
+
+<%= form_tag '/login' do %>
+
+    <% if flash[:notice] %>
+        <div class="alert alert-danger">
+            <%= flash[:notice] %>
+        </div>
+    <% end %>
+
+    <div class="form-group">
+        <label for="inputName" class="col-md-3 control-label">
+            Email:
+        </label>
+        <div class="col-md-9">
+            <div class="input-icon right">
+             <i class="fa fa-user"></i>
+                <input id="inputName" name="email" type="text" placeholder="" class="form-control" />
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="form-group">
+        <label for="inputPassword" class="col-md-3 control-label">
+            Password:
+        </label>
+        <div class="col-md-9">
+            <div class="input-icon right">
+                <i class="fa fa-lock"></i>
+                <input id="inputPassword" name="password" type="password" placeholder="" class="form-control" /></div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        
+        <label for="inputPassword" class="col-md-3 control-label">            
+        </label>
+        <div class="col-md-9">
+            <br/><br/><br/>
+           <button type="submit" class="btn btn-default">
+                Sign In
+            </button>
+        </div>
+    </div>
+    
+
+
+
+
+
+
+<% end %>

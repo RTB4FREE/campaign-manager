@@ -1,0 +1,39 @@
+<% content_for :breadcrumb do %> 
+        <div class="page-header pull-left">
+            <div class="page-title">
+                Users</div>
+        </div>
+        <ol class="breadcrumb page-breadcrumb pull-right">
+            <li><i class="fa fa-home"></i>&nbsp;<a href="/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li class="active">Users</li>
+        </ol>
+<%end%>
+
+<% content_for :main_body do %>
+      <table class="table table-striped table-hover ">
+        <thead>
+          <tr >
+            <th>User Name</th>
+            <th>Email</th>
+            <th colspan="2" width="10%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+              <td><%=user.name%></td>
+              <td><%=user.email%></td>
+              <td><%= link_to 'Edit', edit_user_path(user) %></td>
+              <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      
+      <br>
+      
+      <%= link_to 'New User', new_user_path  , class:"btn btn-default btn-sm" %>
+
+<%end%>
+
+

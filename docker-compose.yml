@@ -1,0 +1,45 @@
+#
+# Execute command to start mysql and rails:
+#       docker-compose up
+#
+# To create database
+#       docker-compose run web rake db:setup
+#
+version: '3'
+services:
+  db:
+    image: mysql/mysql-server:5.7
+    ports:
+    - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rtb4free
+      - MYSQL_DATABASE=rtb4free
+      - MYSQL_USER=ben
+      - MYSQL_PASSWORD=test
+    volumes:
+      - ./db/rtb4free_demo_base_01-23-2018.sql:/docker-entrypoint-initdb.d/rtbdemo.sql
+    networks:
+      - rtb_net
+  web:
+    image: ploh/rtbadmin_open
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    ports:
+      - "3000:3000"
+    environment:
+      - CUSTOMER_NAME=RTB4FREE
+      - RTB4FREE_DATABASE_HOST=db
+      - RTB4FREE_DATABASE_PORT=3306
+      - RTB4FREE_DATABASE_USERNAME=ben
+      - RTB4FREE_DATABASE_PASSWORD=test
+      - RTB4FREE_DATABASE_NAME=rtb4free
+      - ELASTICSEARCH_ENABLE=false
+      - ELASTICSEARCH_HOST=
+      - ELASTICSEARCH_KIBANA_URL=
+    depends_on:
+      - db
+    networks:
+      - rtb_net
+      
+networks:
+  rtb_net:
+    external: true      

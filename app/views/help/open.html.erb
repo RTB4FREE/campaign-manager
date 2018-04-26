@@ -1,0 +1,28 @@
+<% content_for :main_body do %>
+	<style type="text/css">
+		.openhelpdoc { 
+    		 font-size: 14px;
+    		 line-height: 2;
+		}
+		.panel-heading { 
+		    font-weight: normal; 
+    		font-size: 20px;
+		}
+	</style>
+	<div class="openhelpdoc">
+
+        <div class="col-sm-12">
+            <div class="panel panel-info">
+                <div class="panel-heading"><%=@document.name%></div>
+                <div class="panel-body">
+                    <%=raw(@document.code)%>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+
+    </div>
+        
+    
+<%end%>
+

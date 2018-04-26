@@ -1,0 +1,79 @@
+
+<%= bootstrap_form_for(@campaign,layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
+  <% if @campaign.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@campaign.errors.count, "error") %> prohibited this campaign from being saved:</h2
+      <ul>
+      <% @campaign.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.text_field :name, label: "Campaign Name", class: "input-sm", readonly: true  %>
+  <%= f.text_field :id, label: "Campaign ID" , class: "input-sm", readonly: true %>
+  <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @campaign[:activate_time], 
+                :label => "Activate Time",
+            } 
+  %>  
+
+ <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @campaign[:expire_time], 
+                :label => "Expire Time",
+            } 
+  %>    
+  <%= f.text_field :ad_domain, class: "input-sm", readonly: true %>
+  <%= f.text_field :regions, class: "input-sm", readonly: true %>
+ <%   if @campaign.target
+         targetname = @campaign.target.name
+      else
+         targetname = ""
+      end
+  %>
+ <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => targetname, 
+                :label => "Target",
+            } 
+  %>     
+
+  <%= f.text_field :exchanges, class: "input-sm", readonly: true %>
+  <%= f.text_field :shard, label: "Shard", class: "input-sm", readonly: true %>
+
+ <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @campaign[:status], 
+                :label => "Status",
+            } 
+  %>     
+  
+  <%= f.number_field :budget_limit_hourly, prepend: "$", input_group_class: 'input-group-sm', readonly: true %>
+  <%= f.number_field :budget_limit_daily, prepend: "$", input_group_class: 'input-group-sm', readonly: true %>
+  <%= f.number_field :total_budget, prepend: "$", input_group_class: 'input-group-sm', readonly: true %>
+  
+   <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @campaign[:forensiq], 
+                :label => "Forensiq",
+            } 
+  %>     
+  
+  <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @campaign.rtb_standards.collect{|i| "#{i.id}" }.join(", "), 
+                :label => "Rule IDs",
+            } 
+  %>     
+      
+    
+  <div class="actions">
+    <div class="col-sm-2"></div>
+        <div class="col-sm-10">
+    </div>
+  </div>
+  
+<% end %>

@@ -1,0 +1,1 @@
+(function(){var e;e="undefined"!=typeof exports&&null!==exports?exports:this,$(document).ready(function(){return console.log("Loaded dashboard coffeescript."),$("#load_time").text("Updated "+moment().format("lll (Z)"))})}).call(this);

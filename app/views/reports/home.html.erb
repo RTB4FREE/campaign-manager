@@ -1,0 +1,57 @@
+<% content_for :breadcrumb do %> 
+       <div class="page-header pull-left">
+            <div class="page-title">
+                Real Time Bidder Reports 
+            </div>
+        </div>
+        <ol class="breadcrumb page-breadcrumb pull-right">
+            <li><i class="fa fa-home"></i>&nbsp;<a href="/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li class="active">Reports</li>
+        </ol>
+<%end%>
+
+<% content_for :main_body do %> 
+<style>
+    label {
+       margin-right: 10px;
+    }
+</style>
+<div class="page-content">
+    <div id="tab-general">
+        <% #= form_tag reports_home_path, layout: :inline, method: "get" do %>        
+        <%= bootstrap_form_tag url: reports_home_path, layout: :inline, method: "get" do |f| %>
+        
+            <div class="col-lg-12 pull-left">
+
+                <button type="submit" class="btn btn-default btn-sm">Refresh</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="load_time"></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <%= f.number_field :interval_ago, label: "Start ", class: 'input-sm number_field', value: @interval_ago, :style => "width:75px;" %>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                
+                <%= f.select :interval_sym,  @interval_options.collect { |v| [ v[:label], v[:sym] ] }, 
+                        { hide_label: true, include_blank: false , selected: @interval_sym } , 
+                        {class: "input-sm nosearch" }
+                %>
+                &nbsp;&nbsp;ago
+                <br/> <br/>
+            </div>
+            <div class="col-lg-12">
+                <% selInt = @interval_options.find{|o| o[:sym].eql?(@interval_sym)} %>
+                <%= render :partial => 'requeststable', 
+                            :locals => {
+                                :interval_ago => @interval_ago, 
+                                :interval_sym => @interval_sym,
+                                :interval_secs => selInt[:secs],
+                                :interval_label => selInt[:label],
+                                :label => "Last 8 Hours Totals",
+                            }
+                %>  
+            </div> 
+        <%end%>
+    </div>
+</div> 
+
+
+
+<%end%>
+

@@ -1,0 +1,15 @@
+
+
+    <div class="panel panel-violet">
+        <div class="panel-heading"><%=label%></div>
+        <div class="panel-body">
+            <div class="list-group">
+                <a href="#" class="list-group-item">Clicks<span class="pull-right"><%=number_with_delimiter(values[:clicks])%></span></a>
+                <a href="#" class="list-group-item">Pixels<span class="pull-right"><%=number_with_delimiter(values[:pixels])%></span></a>
+                <a href="#" class="list-group-item">Wins<span class="pull-right"><%=number_with_delimiter(values[:wins])%></span></a>
+                <a href="#" class="list-group-item">Bids<span class="pull-right"><%=number_with_delimiter(values[:bids])%></span></a>
+                <a href="#" class="list-group-item">Win Price<span class="pull-right"><%=number_to_currency(values[:win_price])%></span></a>
+                <a href="#" class="list-group-item">Bid Price<span class="pull-right"><%=number_to_currency(values[:bid_price])%></span></a>
+            </div>
+        </div>
+    </div>

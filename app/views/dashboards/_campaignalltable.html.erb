@@ -1,0 +1,50 @@
+
+<div class="panel panel-pink">
+    <div class="panel-heading">Campaign Summaries</div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Campaign</th>
+                <th></th>
+                <th>Clicks</th>
+                <th>Pixels</th>
+                <th>Wins</th>
+                <th>Bids</th>
+                <th>Hourly Cost</th>
+                <th>Daily Cost</th>
+                <th>Total Cost</th>
+            </tr>
+            </thead>
+            <tbody>
+
+        <%  values.each do |camp| %>
+            <tr>
+                <td>
+                    <%=camp.name%>
+                </td>
+                <td>
+                    <% if camp.status.to_s.eql?("offline") %>
+                          <span class="text text-danger"><%=camp.status.camelcase%></span>                                              
+                    <% 
+                        elsif errors = camp.check_errors and errors.length>0
+                             str = errors.join("<br/>")
+                    %>
+                          <span class="text text-danger"><%=raw(str)%></span>
+                    <%end%>                          
+                </td>                   
+
+                <td><%=number_with_delimiter(camp[:clicks])%></td>
+                <td><%=number_with_delimiter(camp[:pixels])%></td>
+                <td><%=number_with_delimiter(camp[:wins])%></td>
+                <td><%=number_with_delimiter(camp[:bids])%></td>
+                <td><%=number_to_currency(camp[:hourly_cost])%></td>
+                <td><%=number_to_currency(camp[:daily_cost])%></td>
+                <td><%=number_to_currency(camp[:cost])%></td>
+            </tr>
+        <%end%>
+            </tbody>
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,1 @@
+json.partial! "rtb_standard/rtb_standard", rtb_standard: @rtb_standard

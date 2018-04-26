@@ -1,0 +1,1 @@
+(function(){$(document).ready(function(){return console.log("loading categories coffeescript"),$("select.nosearch").select2({minimumResultsForSearch:1/0,width:"100%"}),$("select.search_documents").select2({tags:!1,allowClear:!0,multiple:"multiple",placeholder:"select multiple entries, enter text to filter list",width:"100%"})})}).call(this);

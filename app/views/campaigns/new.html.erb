@@ -1,0 +1,27 @@
+
+<% content_for :breadcrumb do %> 	
+        <div class="page-header pull-left">
+            <div class="page-title">
+                New Campaign
+            </div>
+        </div>
+    <ol class="breadcrumb page-breadcrumb pull-right">
+        <li><i class="fa fa-home"></i>&nbsp;<a href="/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li><a href="/campaigns#">Campaign</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li class="active">New</li>
+    </ol>
+<%end%>
+
+<% content_for :main_body do %> 	
+        <div class="col-md-12"><h3></h3>
+            <div class="panel panel-violet">
+                <div class="panel-heading">
+                    New
+                </div>
+                <div class="panel-body pan">
+                    <%= render 'form' %>
+                    <%= link_to 'Campaigns', campaigns_path , class:"btn btn-default btn-sm"%>        
+                </div>
+            </div>                            
+        </div>
+<%end%>

@@ -1,0 +1,70 @@
+
+<div class="panel panel-green">
+    <div class="panel-heading">Region <%=region%> Bidder State Changes - Last Hour</div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th colspan="3">Last Hour</th>
+            </tr>
+
+            <tr>
+                <th>Bidder</th>
+                <th>State</th> 
+                <th>Time</th>
+                <th>QPS Minimum</th>
+                <th>QPS Average</th>                
+                <th>QPS Maximum</th>
+            </tr>
+
+            </thead>
+            <tbody>
+        
+        <%  bidder_status.each do |statsObj| %>
+            <% next if not statsObj["8"] or not states=statsObj["8"]["buckets"] %>
+            <% states.each do |state| %>
+                <% next if state["5"].nil?  %>            
+            <tr>
+                <td>
+                    <%=statsObj["key"]%>
+                </td>
+                <td> 
+                    <% if state["key_as_string"].to_s.eql?("false") then 
+                            thisstate = '<span class="text text-success">Running</span>'
+                        else         
+                            thisstate = '<span class="text text-danger">Stopped</span>'
+                        end
+                    %>
+                    <%=raw(thisstate)%>
+                </td>
+                <td>
+                    <% if state["9"] then %>
+                        <%= Time.at(state["9"]["value"].to_i/1000).strftime('%c')%>
+                    <%end%>
+                </td>
+                <td>
+                    <% if state["6"] then %>
+                        <%=number_with_delimiter(state["6"]["value"].to_i)%>
+                    <%end%>
+                </td>                           
+                <td>
+                    <% if state["5"] then %>
+                        <%=number_with_delimiter(state["5"]["value"].to_i)%>
+                    <%end%>
+                </td>
+                <td>
+                    <% if state["7"] then %>
+                        <%=number_with_delimiter(state["7"]["value"].to_i)%>
+                    <%end%>
+                </td>                           
+            </tr>
+            <%end%>
+        <%end%>
+            </tbody>
+        </table>
+    </div>
+</div>
+

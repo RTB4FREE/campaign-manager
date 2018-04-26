@@ -1,0 +1,66 @@
+
+
+     <%
+            attrObj.keys.each do |exchg| 
+               if exchgObj=Exchange.find_exchange(exchg) and exAttributes = exchgObj[:attributes]
+                  attrHash = attrObj[exchg]
+                
+      %>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2"> <%=exchg.upcase%> Exchange Attributes</label>                         
+                        <div class="col-sm-10">      
+
+                            <table class="table">
+                            <% exAttributes.each do |attrObj| %>
+
+                                <%  
+                                      attrVal = attrObj[:value]
+                                      attrVal = attrHash[attrObj[:name]] if attrHash[attrObj[:name]]
+                                %>
+
+                                <tr>
+                                      <td width="20%">
+                                        <%=attrObj[:label]%> 
+                                      </td>
+                                      <td>
+                                        <% if attrObj[:form_type].to_s.eql?("input")    %>                                                          
+                                            <input type="hidden" name="exchange_attributes_exchange[]" value="<%=exchg%>"/>
+                                            <input type="text" class="input-sm form-control" name="exchange_attributes[][<%=attrObj[:name]%>]" value="<%=attrVal%>"/>
+                                                                                        
+                                        <% elsif attrObj[:form_type].to_s.eql?("select")  %>   
+                                            <input type="hidden" name="exchange_attributes_exchange[]" value="<%=exchg%>"/>
+                                            <select class="input-sm form-control nosearch" name="exchange_attributes[][<%=attrObj[:name]%>]">
+                                                <% sel = { attrVal.to_s => "SELECTED" } %>
+                                                <option value=""></option>
+                                                <% attrObj[:select_options].sort{ |a,b| a[:label].downcase <=> b[:label].downcase }.each do |opt|  %>
+                                                    <option value="<%=opt[:value]%>" <%=sel[opt[:value].to_s].to_s%>><%=opt[:label]%></option>  
+                                                <%end%>
+                                            </select>
+                                            
+                                        <% elsif attrObj[:form_type].to_s.eql?("select_multi")  %>   
+                                            <input type="hidden" name="exchange_attributes_exchange[]" value="<%=exchg%>"/>
+                                            <select class="input-sm form-control search_rules" name="exchange_attributes[][<%=attrObj[:name]%>][]" multiple>
+                                                <% selVals = []                                                
+                                                   selVals =  JSON.parse(attrVal) if not attrVal.to_s.empty?  
+                                                %>
+                                                <option value=""></option>
+                                                <% attrObj[:select_options].sort{ |a,b| a[:label].downcase <=> b[:label].downcase }.each do |opt|  %>
+                                                    <% 
+                                                        sel = ""
+                                                        sel = "SELECTED" if selVals.include?(opt[:value])
+                                                    %>
+                                                    <option value="<%=opt[:value]%>" <%=sel%>><%=opt[:label]%></option>  
+                                                <%end%>
+                                            </select>
+
+                                        <%end%>
+                                      </td>                          
+                                </tr>
+                            <%end%>
+                            </table>
+
+
+                        </div>
+                    </div>
+              <%end%>
+          <%end%>

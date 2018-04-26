@@ -1,0 +1,13 @@
+
+ <div class="form-group">
+    <label class="control-label col-sm-2" for="<%=tag_id%>"><%=label%></label>
+    <div class="col-sm-10">
+      <%= select_tag tag_id,
+          options_for_select( 
+            collection,
+            value.to_s.split(",")
+          ), 
+          { include_blank: "Select a #{label}",  multiple: "multiple", class:"form-control"} 
+      %>
+    </div>
+  </div>

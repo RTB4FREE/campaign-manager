@@ -1,0 +1,27 @@
+<%= bootstrap_form_for(@category,layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
+  <% if @category.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@category.errors.count, "error") %> prohibited this category from being saved:</h2
+      <ul>
+      <% @category.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+
+  
+  <%= f.text_field :id, label: "Category ID" , class: "input-sm", readonly: true %>
+  <%= f.text_field :name, label: "Category Name" , class: "input-sm", readonly: true %>
+  <%= f.text_area :description, class: "input-sm", readonly: true %>  
+ <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @category.documents.collect{|i| "#{i.id}" }.join(", "), 
+                :label => "Document IDs",
+            } 
+  %>
+
+  
+  
+<% end %>

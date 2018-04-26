@@ -1,0 +1,24 @@
+
+
+label.required:after {
+  content:" *";
+}
+
+a.btn { margin: 10px;}
+
+.panel-body { margin: 10px;  }
+
+
+span.crosshair {
+    cursor: crosshair;
+}
+.mapdialog { 
+    margin:5px;
+}
+
+
+.bootstrap-datetimepicker-widget {
+    background-color: #eee;
+    border-color: #285e8e;
+    color: #000;
+}

@@ -1,0 +1,40 @@
+<% content_for :breadcrumb do %> 
+        <div class="page-header pull-left">
+            <div class="page-title">
+                Show Banner: <em> <%=@banner.name%> </em></div>
+        </div>
+        <ol class="breadcrumb page-breadcrumb pull-right">
+            <li><i class="fa fa-home"></i>&nbsp;<a href="/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li><a href="/banners#">Banners</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li class="active">Show</li>
+        </ol>
+<%end%>
+<% content_for :main_body do %> 	
+        <div class="col-md-12"><h3></h3>
+            <div class="row mtl">
+                <div class="col-md-3">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            Profile
+                        </div>
+                        <div class="panel-body pan">
+                            <%= render 'stats' %>
+                        </div>
+                    </div>
+                </div>    
+                <div class="col-md-9">
+                    <div class="panel panel-grey">
+                        <div class="panel-heading">
+                            Show
+                        </div>
+                        <div class="panel-body pan">
+                            <%= render 'showform' %>
+                            <%= link_to 'Edit', edit_banner_path(@banner) , class:"btn btn-default btn-sm" %> |
+                            <%= link_to 'Banners', banners_path , class:"btn btn-default btn-sm"%>        
+                        </div>
+                    </div>                            
+                </div>
+            </div>
+        </div>
+<%end%>
+

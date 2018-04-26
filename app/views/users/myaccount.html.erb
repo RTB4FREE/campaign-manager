@@ -1,0 +1,60 @@
+ <% content_for :breadcrumb do %> 
+        <div class="page-header pull-left">
+            <div class="page-title">
+                User Profile: <em> <%=@user.name%> </em>
+            </div>
+        </div>
+        <ol class="breadcrumb page-breadcrumb pull-right">
+            <li><i class="fa fa-home"></i>&nbsp;<a href="/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li class="active">My Profile</li>
+        </ol>
+<%end%>
+
+<% content_for :main_body do %> 	
+        <div class="col-md-12"><h3></h3>
+            <div class="row mtl">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        My Profile
+                    </div>
+                    <div class="panel-body pan">
+
+
+                    <%= bootstrap_form_for(@user,url: '/myaccountUpdate',layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
+                    
+                    
+                    
+                      <% if @user.errors.any? %>
+                        <div id="error_explanation">
+                          <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2
+                          <ul>
+                          <% @user.errors.full_messages.each do |message| %>
+                            <li><%= message %></li>
+                          <% end %>
+                          </ul>
+                        </div>
+                      <% end %>
+                      
+                      <%= f.text_field :name, label: "Name" , class: "input-sm" %>
+                      <%= f.email_field :email, class: "input-sm"  %>
+                      <%= f.password_field :password , class: "input-sm" %>
+                      <%= f.password_field :password_confirmation , class: "input-sm" %>
+                      
+                      <br/>
+                    
+                      <div class="actions">
+                        <div class="col-sm-2"></div>
+                            <div class="col-sm-10">
+                            <button type="submit" class="btn btn-default btn-sm">Update</button>
+                        </div>
+                      </div>  
+                      
+                      
+                    <% end %>
+
+                    </div>
+                </div>                            
+
+            </div>
+        </div>
+<%end%>

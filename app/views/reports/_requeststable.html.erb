@@ -1,0 +1,75 @@
+
+<div class="panel panel-green">
+    <div class="panel-heading">Request Activity</div>
+    <div class="panel-body">
+
+
+        
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Banner</th>
+                <th>Campaign</th>                
+                <th>Exchange</th>
+                <th>Counts - last <%=interval_ago%>  <%=interval_label%></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+        <%  @banners.each do |banner| %>
+            <tr>
+                <td>
+                    <%=banner.name%>
+                </td>
+                <td>
+                 <% if banner.campaign %>
+                    <%=banner.campaign.name%>
+                  <%end%>
+                </td>
+                <td>
+                 <% if banner.campaign %>
+                    <%=banner.campaign.exchanges%>
+                  <%end%>
+                </td>                   
+
+                <% if banner.report_commands %>
+                    <td>
+                        
+                        <% banner.report_commands.each do |rpt| %>
+                             <%
+                                
+                                starttime =  (Time.now.to_i - (interval_ago*interval_secs)) * 1000
+                                endtime = Time.now.to_i*1000
+                                resp=@elastic.queryCount(ELASTICSEARCH_REQUESTS_INDEX,rpt.command,starttime,endtime)
+                                puts "es response #{resp.inspect}"                                
+                                resp ||= {}
+                             %>
+                             
+                             <%=number_with_delimiter(resp["count"])%>
+                             <br/>   
+                         <%end%>
+                    </td>               
+    
+                    <td>
+                        <% banner.report_commands.each do |rpt| %>                        
+                            <%
+                                cmd = rpt.command
+                                query = CGI.escape(cmd)
+                            %>   
+                    <a href="<%="#{ELASTICSEARCH_KIBANA_URL}/app/kibana#/discover?_g=(time:(from:now-#{interval_ago}#{interval_sym},mode:relative,to:now))&_a=(columns:!(_source),index:'#{ELASTICSEARCH_REQUESTS_INDEX}',interval:auto,query:(query_string:(analyze_wildcard:!t,query:'#{query}')),sort:!('@timestamp',desc))"%>" target="_blank">Open Kibana Query</a>                        
+                            <br/>                    
+                         <%end%>
+                    </td>                           
+                <%else%>
+                    <td></td>
+                    <td></td>
+                <%end%>      
+
+            </tr>
+        <%end%>
+            </tbody>
+        </table>
+    </div>
+</div>
+

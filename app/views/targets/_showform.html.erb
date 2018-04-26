@@ -1,0 +1,75 @@
+<%= bootstrap_form_for(@target,layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
+  <% if @target.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@target.errors.count, "error") %> prohibited this target from being saved:</h2
+      <ul>
+      <% @target.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= f.text_field :id, label: "ID" , class: "input-sm",disabled: true %>
+
+  <%= f.text_field :name, label: "Target Name" , class: "input-sm",disabled: true %>
+  <%= f.text_field :id, label: "Target ID" , class: "input-sm", readonly: true %>
+
+ <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @target[:activate_time], 
+                :label => "Activate Time",
+            } 
+  %>  
+
+ <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @target[:expire_time], 
+                :label => "Expire Time",
+            } 
+  %>  
+  
+  <%= f.text_field :domain_targetting, label: "Domain List Type", class: "input-sm", readonly: true %>
+  <%= f.text_area :list_of_domains, label: "List of Domains",class: "input-sm", readonly: true %>
+  
+  <%= f.text_field :geo_latitude, append: "degrees", input_group_class: 'input-group-sm', readonly: true %>  
+  <%= f.text_field :geo_longitude, append: "degrees", input_group_class: 'input-group-sm', readonly: true %>  
+  <%= f.number_field :geo_range, append: "meters", input_group_class: 'input-group-sm' , readonly: true%>
+  <%= f.text_field :geo_region, class: 'input-sm' , readonly: true %>
+  
+   <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @target[:country], 
+                :label => "Country",
+            } 
+  %>  
+  
+  <%= f.text_field :carrier, class: 'input-sm', readonly: true %>
+  <%= f.text_field :os, label: "Operating System", class: 'input-sm', readonly: true %>
+  <%= f.text_field :make, class: 'input-sm', readonly: true %>
+  <%= f.text_field :model, class: 'input-sm', readonly: true %>
+  
+  <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @target[:devicetype], 
+                :label => "Device Type",
+            } 
+  %> 
+  
+  <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @target[:IAB_category], 
+                :label => "IAB Categories - Whitelist",
+            } 
+  %>
+
+  <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @target[:IAB_category_blklist], 
+                :label => "IAB Categories - Blacklist",
+            } 
+  %>
+    
+
+  
+<% end %>

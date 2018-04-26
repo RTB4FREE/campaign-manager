@@ -1,0 +1,1 @@
+json.array! @banner_videos, partial: 'banner_videos/banner_video', as: :banner_video

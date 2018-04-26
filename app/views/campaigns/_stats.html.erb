@@ -1,0 +1,59 @@
+
+
+<table class="table table-striped table-bordered table-hover">
+    <tbody>
+    <tr>
+        <td>Status</td>
+        <td>
+            <% 
+                errors = @campaign.check_errors 
+                color = "success"
+                color = "danger" if @campaign.status.to_s.eql?("offline")
+            %>
+            <span class="label label-<%=color%>">
+                <%= @campaign.status.to_s.upcase %><br/>
+            </span>
+          <span class="text text-danger"><%=raw(errors.join("</br>"))%></span>
+        </td>
+    </tr>
+    <% if false %>
+    <tr>
+        <td>Total Cost</td>
+        <td><%=number_to_currency(@campaign.cost)%></td>
+    </tr>
+    <tr>
+        <td>Daily Cost</td>
+        <td><%=number_to_currency(@campaign.daily_cost)%></td>
+    </tr>
+    <tr>
+        <td>Hourly Cost</td>
+        <td><%=number_to_currency(@campaign.hourly_cost)%></td>
+    </tr>
+    <tr>
+        <td>Clicks</td>
+        <td><%=number_with_delimiter(@campaign.clicks)%></td>
+    </tr>
+    <tr>
+        <td>Pixels</td>
+        <td><%=number_with_delimiter(@campaign.pixels)%></td>
+    </tr>
+    <tr>
+        <td>Wins</td>
+        <td><%=number_with_delimiter(@campaign.wins)%></td>
+    </tr>
+    <tr>
+        <td>Bids</td>
+        <td><%=number_with_delimiter(@campaign.bids)%></td>
+    </tr>
+    <%end%>
+    <tr>
+        <td>Last updated</td>
+        <td><%=@campaign.updated_at%></td>
+    </tr>
+    <tr>
+        <td>Created</td>
+        <td><%=@campaign.created_at%></td>
+    </tr>    
+    </tbody>
+</table> 
+

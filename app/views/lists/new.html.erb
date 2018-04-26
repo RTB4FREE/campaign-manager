@@ -1,0 +1,116 @@
+
+
+
+<% content_for :main_body do %>
+    <style type="text/css">
+	.hideme,file {
+		display:none;
+	}    
+    </style>
+       <br/><br/>
+		<%= form_for @media, url: {action: "update"}, :html=> {:class=>"form-horizontal select2"}  do  |f| %>
+          <fieldset>
+            <%= f.hidden_field :id %>
+          <div class="form-group"> 
+            <label class="col-sm-2 control-label">Name</label>    
+            <div class="col-sm-10">
+                <%= f.text_field :name ,  class: ""%>
+            </div>
+          </div>
+
+          <div class="form-group"> 
+            <label class="col-sm-2 control-label">Description</label>    
+            <div class="col-sm-10">
+                <%= f.text_field :description ,  class: ""%>
+            </div>
+          </div>
+          <div class="form-group"> 
+            <label class="col-sm-2 control-label">URL</label>    
+            <div class="col-sm-10">
+                <%= f.text_field :s3_url ,  class: ""%>
+            </div>
+          </div>
+          <div class="form-group"> 
+            <label class="col-sm-2 control-label">URL</label>    
+            <div class="col-sm-10">
+                <%= f.text_field :s3_url ,  class: ""%>
+            </div>
+          </div>
+          <div class="form-group">               
+              <label class="col-sm-2 control-label">File</label> 
+              <div class="col-sm-10">
+					<div id="uploads_container"></div>
+					<div class="js-progress-bars"></div>
+					<button type="button" class="btn btn-xs btn-info " onclick="document.getElementById('selectedFile').click();">
+						</span><span class="glyphicon glyphicon-plus"></span> Select files to attach...
+  					</button>
+              </div>
+          </div>
+
+          <div class="form-group"> 
+            <label class="col-sm-2 control-label"></label>    
+            <div class="col-sm-10">
+              <button type="f.submit" class="btn btn-default">Create Media</button>
+              <a class="btn btn-default" href="/media/list">Cancel</a>
+            </div>
+          </div>
+      <% end %>
+
+			<%= s3_uploader_form callback_url: media_upload_url,
+				 id: "s3-uploader",
+				 callback_param: "file_url",
+				 callback_method: "POST",
+				 key: "uploads/{timestamp}-{unique_id}-#{SecureRandom.hex}/${filename}",
+                 key_starts_with: "uploads/",
+                 data: {:media_id => @media.id.to_s},   # See s3_direct_upload coffee script to set arbitrary attributes
+				 class: "hideme" do %>
+  				<%= file_field_tag :file, multiple: true, id:"selectedFile" %>
+  				  				
+				<script id="template-upload" type="text/x-tmpl">
+				<div id="file-{%=o.unique_id%}" class="upload">
+				  {%=o.name%} 
+				  <div class="progress">
+				  	<div class="bar" style="width: 0%"></div>
+				  </div>
+				</div>
+				</script>
+			<% end %>
+
+
+<% end %>   
+
+
+<% content_for :javascript do %>  
+
+    <%= javascript_include_tag 'application_s3upload.js' %>
+    <script type="text/javascript">
+        $.ajaxSetup({
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRF-Token',
+                                     $('meta[name="csrf-token"]').attr('content'));
+            }
+        });
+        $(document).ready(function() {
+                $('a[href="' + this.location.pathname + '"]').parents(".tapsidenavitem").addClass('active');         
+        		$('#tapin-navbar-header-breadcrumb').append('<li>My Resources</li><li>Media</li><li class="active">New</li>');        
+                $('.nav-tabs a:first').tab('show');
+                $('.nav-tabs a').click(function (e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                });
+                $(".select2").select2({
+            			placeholder: '- select -',
+            			minimumResultsForSearch: Infinity,
+            			width: '100%'			
+            	})
+        });
+
+    </script>
+
+
+
+<% end %>
+
+
+
+

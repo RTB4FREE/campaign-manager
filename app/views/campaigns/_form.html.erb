@@ -1,0 +1,86 @@
+
+<%= bootstrap_form_for(@campaign,layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
+  <% if @campaign.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@campaign.errors.count, "error") %> prohibited this campaign from being saved:</h2
+      <ul>
+      <% @campaign.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.text_field :name, label: "Campaign Name", class: "input-sm"  %>
+  <%= f.text_field :id, label: "Campaign ID" , class: "input-sm", readonly: true %>
+
+  <div class="form-group">
+      <label class="control-label col-sm-2 required" for="activate_time">Active Start/End</label>
+      <div class="col-sm-10 form-inline">
+          <div class='input-group datepicker'>
+              <input type='text' class='input-sm' name='activate_time' value="<%=@campaign.activate_time.strftime('%m-%d-%Y %H%M')%>"/>
+              <span class="input-group-addon  input-sm">
+                  <span class="glyphicon glyphicon-calendar "></span>
+              </span>
+          </div>
+          &nbsp;&nbsp;to&nbsp;&nbsp;
+          <div class='input-group datepicker'>
+              <input type='text' class='input-sm' name='expire_time' value="<%=@campaign.expire_time.strftime('%m-%d-%Y %H%M')%>" />
+              <span class="input-group-addon  input-sm">
+                  <span class="glyphicon glyphicon-calendar "></span>
+              </span>
+          </div>
+      </div>
+  </div>    
+
+  <%= f.text_field :ad_domain, class: "input-sm" %>
+  <%= render :partial => 'form_csv', 
+            :locals => {
+                :value => @campaign[:regions], 
+                :label => "Regions *",
+                :tag_id => "regions[]",
+                :collection=>Region.all {|obj| obj[:name]}.collect { |v| [ v[:label], v[:name] ] } 
+            } 
+  %>
+
+  <%= f.collection_select(:target_id, Target.order(:name), :id, :name, {label: "Targets", include_blank: true},
+    { class: "search form-control input-sm" }) %>
+
+  <%= render :partial => 'form_csv', 
+            :locals => {
+                :value => @campaign[:exchanges], 
+                :label => "Exchanges",
+                :tag_id => "exchanges[]",
+                :collection=>Exchange.all {|obj| obj[:name]}.collect { |v| [ v[:name].camelize, v[:name] ] } 
+            } 
+  %>
+  <%= f.text_field :shard, label: "Shard", class: "input-sm" %>
+  
+  <%= f.form_group :status, label: { text: "Status" } do %>
+    <%= f.radio_button :status, :runnable, label: "Runnable"  %>
+    <%= f.radio_button :status, :offline, label: "Offline" %>
+  <% end %>
+  
+
+
+  <%= f.number_field :budget_limit_hourly, prepend: "$", input_group_class: 'input-group-sm' %>
+  <%= f.number_field :budget_limit_daily, prepend: "$", input_group_class: 'input-group-sm' %>
+  <%= f.number_field :total_budget, prepend: "$", input_group_class: 'input-group-sm' %>
+  
+  <%= f.form_group :forensiq, label: { text: "Forensiq" } do %>
+    <%= f.radio_button :forensiq, :yes, label: "Yes" %>
+    <%= f.radio_button :forensiq, :no, label: "No" %>
+  <% end %>
+
+  <%= f.collection_select(:rtb_standard_ids, RtbStandard.order(:name), :id, :name, {label: "Rules"},
+    {:multiple => true, class: "search_rules" }) %>
+
+
+  <div class="actions">
+    <div class="col-sm-2"></div>
+        <div class="col-sm-10">
+        <button type="submit" class="btn btn-default btn-sm">Update</button>
+    </div>
+  </div>
+  
+<% end %>

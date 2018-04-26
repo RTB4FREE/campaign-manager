@@ -1,0 +1,20 @@
+
+version: '3'
+services:
+  db:
+    image: mysql/mysql-server:5.7
+    ports:
+    - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rtb4free
+      - MYSQL_DATABASE=rtb4free
+      - MYSQL_USER=ben
+      - MYSQL_PASSWORD=test
+    volumes:
+      - ./db/rtb4free_demo_base_01-23-2018.sql:/docker-entrypoint-initdb.d/rtbdemo.sql
+    networks:
+      - rtb_net
+      
+networks:
+  rtb_net:
+    external: true      

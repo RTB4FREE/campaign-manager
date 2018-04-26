@@ -1,0 +1,78 @@
+<%= bootstrap_form_for(@banner,layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
+  <% if @banner.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@banner.errors.count, "error") %> prohibited this banner from being saved:</h2
+      <ul>
+      <% @banner.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%  
+      if @banner[:campaign_id] and camp = Campaign.find(@banner[:campaign_id])
+          campname = camp.name
+      else
+         campname = "" 
+      end
+  %>
+    <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => campname, 
+                :label => "Campaign",
+            } 
+  %>
+  <%= f.text_field :id, label: "Banner ID" , class: "input-sm",readonly: true %>
+  <%= f.text_field :name, label: "Banner Name" , class: "input-sm",readonly: true %>
+  <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @banner[:interval_start], 
+                :label => "Interval Start",
+            } 
+  %>  
+
+ <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @banner[:interval_end], 
+                :label => "Interval End",
+            } 
+  %>  
+
+  <%= f.number_field :width, append: "pixels", input_group_class: 'input-group-sm',readonly: true %>
+  <%= f.number_field :height, append: "pixels", input_group_class: 'input-group-sm',readonly: true %>
+  <%= f.text_field :width_range, class: 'input-sm', readonly: true %>
+  <%= f.text_field :height_range, class: 'input-sm', readonly: true %>
+  <%= f.text_field :width_height_list, class: 'input-sm', readonly: true %>
+  <%= f.number_field :bid_ecpm, prepend: "$", input_group_class: 'input-group-sm',readonly: true %>  
+   <%= f.text_field :deals, class: 'input-sm', readonly: true %>  
+  <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @banner[:contenttype], 
+                :label => "Content Type",
+            } 
+  %>
+  <%= f.text_field :iurl, label: "Image URL",readonly: true, class: "input-sm" %>
+  <%= f.text_area :htmltemplate, label: "HTML Template",readonly: true, class: "input-sm"  %>
+  
+  <%= f.number_field :hourly_budget, prepend: "$", input_group_class: 'input-group-sm',readonly: true %>
+  <%= f.number_field :daily_budget, prepend: "$", input_group_class: 'input-group-sm',readonly: true %>
+  <%= f.number_field :total_basket_value, prepend: "$", input_group_class: 'input-group-sm',readonly: true %>
+ 
+  <%= f.text_field :frequency_spec,  readonly: true  , class: "input-sm"%>
+  <%= f.number_field :frequency_expire, append: "minutes" , readonly: true , input_group_class: 'input-group-sm'%>
+  <%= f.number_field :frequency_count, readonly: true , class: "input-sm"%> 
+  <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @banner.rtb_standards.collect{|i| "#{i.id}" }.join(", "), 
+                :label => "Rule IDs",
+            } 
+  %>     
+  
+    <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @banner.exchange_attributes.collect{|i| "#{i.name}=#{i.value}" }.join(", "), 
+                :label => "Exchange Attributes",
+            } 
+  %>
+  
+<% end %>

@@ -1,0 +1,31 @@
+
+<% content_for :breadcrumb do %> 
+        <div class="page-header pull-left">
+            <div class="page-title">
+                New Category: <em> <%=@category.name%> </em>
+            </div>
+        </div>
+        <ol class="breadcrumb page-breadcrumb pull-right">
+            <li><i class="fa fa-home"></i>&nbsp;<a href="/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li><a href="/categories#">Categories</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li class="active">New</li>
+        </ol>
+<%end%>
+
+<% content_for :main_body do %> 	
+        <div class="col-md-12"><h3></h3>
+            <div class="row mtl">
+                <div class="col-md-12">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            New
+                        </div>
+                        <div class="panel-body pan">
+                            <%= render 'form' %>
+                            <%= link_to 'Back', categories_path %>      
+                        </div>
+                    </div>                            
+                </div>
+            </div>
+        </div>
+<%end%>

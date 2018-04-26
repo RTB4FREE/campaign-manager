@@ -1,0 +1,237 @@
+<style>
+	#editor_container { 
+		border: 3px;
+		border-radius: 6px 6px 6px 6px;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);	
+		width:100%; 
+		height:100px;	
+		padding: 0.5em;
+	}
+	#editor { 
+		position:relative;
+		width:100%; 
+		height:100%;
+	}		
+</style>
+<%= bootstrap_form_for(@banner_video,layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
+  <% if @banner_video.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@banner_video.errors.count, "error") %> prohibited this banner video from being saved:</h2
+      <ul>
+      <% @banner_video.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= f.collection_select :campaign_id, Campaign.order(:name), :id, :name, { prompt: true, include_blank: true} ,{ class: "nosearch" }%>
+  <%= f.text_field :id, label: "Video ID" , class: "input-sm", readonly: true %>
+  <%= f.text_field :name, label: "Video Name" , class: "input-sm" %>
+  <div class="form-group">
+      <label class="control-label col-sm-2 required" for="interval_start">Interval Start/End</label>
+      <div class="col-sm-10 form-inline">
+          <div class='input-group datepicker'>
+              <input type='text' class='input-sm' name='interval_start' id="interval_start" value="<%=@banner_video.interval_start.strftime('%m-%d-%Y %H%M')%>"/>
+              <span class="input-group-addon  input-sm">
+                  <span class="glyphicon glyphicon-calendar "></span>
+              </span>
+          </div>
+          &nbsp;&nbsp;to&nbsp;&nbsp;
+          <div class='input-group datepicker'>
+              <input type='text' class='input-sm' name='interval_end' value="<%=@banner_video.interval_end.strftime('%m-%d-%Y %H%M')%>" />
+              <span class="input-group-addon  input-sm">
+                  <span class="glyphicon glyphicon-calendar "></span>
+              </span>
+          </div>
+      </div>
+  </div>    
+    <div class="form-group" >  
+      <label class="control-label col-sm-2" for="deals">Creative Size Options</label>
+      <div class="col-sm-10 form-inline" >
+          <div class='input-group'  style="padding-top: 11px;" >
+              <% 
+                size_match_type = "none"
+                if not (@banner_video.vast_video_width.nil? or @banner_video.vast_video_width.to_s.empty? or @banner_video.vast_video_width.to_i==0) or 
+                   not (@banner_video.vast_video_height.nil? or @banner_video.vast_video_height.to_s.empty? or @banner_video.vast_video_height.to_i==0) 
+                  size_match_type = "width_height_only"
+                elsif  not (@banner_video.width_range.nil? or @banner_video.width_range.empty?) or 
+                       not (@banner_video.height_range.nil? or @banner_video.height_range.empty?) 
+                  size_match_type = "width_height_range"
+                elsif not (@banner_video.width_height_list.nil? or @banner_video.width_height_list.empty?)   
+                  size_match_type = "width_height_list"
+                end
+                  checked = {}
+                  checked[size_match_type] = "checked"
+                  style = {}
+                  style[size_match_type] = "display:inline"
+              %>
+              <input type='radio' name='size_match_type'  value="none" <%=checked["none"]%>/> Match any width/height  
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type='radio' name='size_match_type'  value="width_height_only" <%=checked["width_height_only"]%>/> Match specified width/height  
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type='radio' name='size_match_type'  value="width_height_range" <%=checked["width_height_range"]%>/> Match width/height ranges   
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type='radio' name='size_match_type'  value="width_height_list" <%=checked["width_height_list"]%>/> Match width/height list
+          </div>
+      </div>
+    </div>
+
+    <% style["width_height_only"] ||= "display:none" %>
+    <div id="width_height_only_div" style="<%=style["width_height_only"]%>">
+      <%= f.number_field :vast_video_width, append: "pixels", input_group_class: 'input-group-sm' %>
+      <%= f.number_field :vast_video_height, append: "pixels", input_group_class: 'input-group-sm' %>
+    </div>
+    <% style["width_height_range"] ||= "display:none" %>
+    <div id="width_height_range_div" style="<%=style["width_height_range"]%>">
+      <%= f.text_field :width_range, placeholder: "ie, 300-320  leave empty to match any width", append: "start pixel-end pixel", input_group_class: 'input-group-sm' %>
+      <%= f.text_field :height_range, placeholder: "ie, 480-600  leave empty to match any height",  append: "start pixel-end pixel", input_group_class: 'input-group-sm' %>
+    </div>
+    <% style["width_height_list"] ||= "display:none" %>
+    <div id="width_height_list_div" style="<%=style["width_height_list"]%>">
+      <%= f.text_field :width_height_list, label: "Width x Height List", placeholder: "ie, 300x250,320x480  comma separate values", append: "width px x height px", input_group_class: 'input-group-sm' %>
+    </div>
+
+
+  <%= f.text_field :bid_ecpm, prepend: "$", input_group_class: 'input-group-sm' %> 
+  
+  <div class="form-group">  
+      <label class="control-label col-sm-2" for="deals">Deals</label>
+      <div class="col-sm-10 form-inline">
+          <div class='input-group'   style="padding-top: 11px;">
+              <% 
+                if @banner_video.deals.nil? or @banner_video.deals.to_s.empty? 
+                  dealtype = "none"
+                elsif @banner_video.bid_ecpm.to_i == 0 
+                  dealtype = "private_only"
+                else  
+                  dealtype = "private_preferred"
+                end
+                  checked = {}
+                  checked[dealtype] = "checked"
+              %>
+              <input type='radio' name='deal_type'  value="none" <%=checked["none"]%>/> No Deals  
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type='radio' name='deal_type'  value="private_only" <%=checked["private_only"]%>/> Private Only  
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type='radio' name='deal_type'  value="private_preferred" <%=checked["private_preferred"]%>/> Private Preferred
+              <%
+                style = ""
+                style="display:none" if dealtype.to_s.eql?("none")
+              %>              
+              <div id="deals_table_div"  style="<%=style%>">
+                <br/>
+                <table class="table table-condensed" id="deals_table">
+                  <tr>
+                    <th width="50%">Deal ID</th>
+                    <th width="35%">Deal Price (ecpm)</th>
+                    <th></th>
+                  </tr>
+                  <% if dealtype.eql?("none")%>                                    
+                  <tr>
+                    <td>
+                        <input type='text' class='form-control input-sm' name='deal_id[]'  value=""/>
+                    </td>
+                    <td>
+                      <div class="input-group input-group-sm" >
+                        <span class="input-group-addon">$</span> 
+                        <input type='text' class='form-control ' name='deal_price[]'  value=""/>
+                      </div>
+                    </td>
+                    <td style="vertical-align:middle">
+                        <span class="input-sm">
+                            <span class="glyphicon glyphicon-plus-sign tableRowAdd"></span>
+                        </span>
+                        <span class="input-sm" style="visibility:hidden">
+                            <span class="glyphicon glyphicon-plus-sign tableRowMinus"></span>
+                        </span>                        
+                    </td>
+                  </tr>
+                  <% else %>
+                        <%@banner_video.deals.split(",").each_with_index do |dealStr,idx| 
+                              id,price = dealStr.split(":")
+                        %>
+                  <tr>
+                    <td>
+                        <input type='text' class='form-control input-sm' name='deal_id[]'  value="<%=id%>"/>
+                    </td>
+                    <td>
+                      <div class="input-group input-group-sm" >
+                        <span class="input-group-addon">$</span> 
+                        <input type='text' class='form-control ' name='deal_price[]'  value="<%=price%>"/>
+                      </div>
+                    </td>
+                    <td style="vertical-align:middle">
+                        <span class="input-sm">
+                            <span class="glyphicon glyphicon-plus-sign tableRowAdd"></span>
+                        </span>
+                        <span class="input-sm" style="visibility:hidden">
+                            <span class="glyphicon glyphicon-plus-sign tableRowMinus"></span>
+                        </span>                        
+                    </td>
+                  </tr>
+                        
+                        
+                        <%end%>
+                  <%end%>
+                </table>
+              </div>
+          </div>
+      </div>
+  </div>      
+  
+  <%= f.number_field :bitrate, append: "kbps", input_group_class: 'input-group-sm' %>  
+  <%= f.select :mime_type, BannerVideoMimeTypes.all.collect { |v| [ v[:name], v[:name] ] }, { include_blank: false } , {class: "nosearch"}%>
+
+  <%= f.select :vast_video_linerarity, VastVideoLinerarity.all.collect { |v| [ v[:description], v[:value] ] }, { include_blank: false } , {class: "nosearch"} %>  
+  <%= f.number_field :vast_video_duration, append: "seconds" , input_group_class: 'input-group-sm' %>
+  <%= f.select :vast_video_type, VastVideoType.all.collect { |v| [ v[:description], v[:value] ] }, { include_blank: false } , {class: "nosearch"} %>
+
+    <span style="display:none"><%= f.text_area :vast_video_outgoing_file, label: " " %></span>
+    <div class="form-group">
+      <label class="control-label col-sm-2 required" for="vast_video_outgoing_file">Vast Video Outgoing File</label>
+      <div class="col-sm-10">
+          <div id="editor_container"><div name="editor" id="editor"></div></div>  
+      </div>
+  </div>  
+  
+  <%= f.number_field :hourly_budget, prepend: "$", input_group_class: 'input-group-sm' %>
+  <%= f.number_field :daily_budget, prepend: "$", input_group_class: 'input-group-sm' %>
+  <%= f.number_field :total_basket_value, prepend: "$", input_group_class: 'input-group-sm' %>
+  
+  <%= f.text_field :frequency_spec, class: "input-sm"  %>
+  <%= f.number_field :frequency_expire, append: "minutes" , input_group_class: 'input-group-sm'%>
+  <%= f.number_field :frequency_count , class: "input-sm"%>  
+  <%= f.collection_select(:rtb_standard_ids, RtbStandard.order(:name), :id, :name, {label: "Rules"},
+    {:multiple => true, class: "search_rules" }) %>
+
+
+  <div id="exchange_attributes_div">
+    <% if camp=@banner_video.campaign and 
+          not camp.exchanges.to_s.empty? and
+          exchanges=camp.exchanges.split(",") 
+      then    
+            attrObj = {}
+            exchanges.each do |exchg|                 
+                attrHash = {}
+                @banner_video.exchange_attributes.each{ |i|  attrHash[i.name] = i.value if i.exchange.to_s.eql?(exchg) }
+                attrObj[exchg] = attrHash 
+            end
+     %>
+          <%= render :partial => '/banners/exchange_attributes', 
+                      :locals => {
+                          :attrObj => attrObj
+                      }
+          %>  
+    <%end%>
+    
+  </div>
+
+  <div class="actions">
+    <div class="col-sm-2"></div>
+        <div class="col-sm-10">
+        <button type="submit" class="btn btn-default btn-sm">Update</button>
+    </div>
+  </div>  
+    
+<% end %>

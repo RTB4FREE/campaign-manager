@@ -1,0 +1,64 @@
+<% content_for :breadcrumb do %> 
+        <div class="page-header pull-left">
+            <div class="page-title">
+                Help Documentation </div>
+        </div>
+        <ol class="breadcrumb page-breadcrumb pull-right">
+            <li><i class="fa fa-home"></i>&nbsp;<a href="/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li class="active">Documentation</li>
+        </ol>
+<%end%>
+
+<% content_for :main_body do %>
+
+      <%= bootstrap_form_tag url: help_list_path, method: :get, layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10" do |f| %>
+         <%  checked={}; checked[@sort.to_s] = true;  %>
+         <%= f.form_group :sort, label: { text: "Sort by " }  do %>            
+            <%= f.radio_button :sort, :category, label: "Category", checked: checked["category"], name: "sort" %>
+            <%= f.radio_button :sort, :document, label: "Document", checked: checked["document"], name: "sort" %>
+        <% end %>
+      <% end %>
+
+      <table class="table table-striped table-hover ">
+        <thead>
+          <tr >
+            <th>Category</th>
+            <th>Documents</th>
+            <th>Description</th>
+            <th colspan="2" width="10%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @categories %>
+            <% @categories.each do |category| %>
+              <% category.documents.each do |document| %>
+                <tr>
+                  <td><%=category.name%></td>
+                  <td>
+                      <%= link_to document.name, help_open_url(:id=>document.id)%>
+                  </td>
+                  <td><%=document.description %></td>
+                </tr>
+              <%end%>
+            <% end %>
+          <% end %>
+          <% if @documents %>
+            <% @documents.each do |document| %>
+              <% document.categories.each do |category| %>
+                <tr>
+                  <td><%=category.name%></td>
+                  <td>
+                      <%= link_to document.name, help_open_path(:id=>document.id)%>
+                  </td>
+                  <td><%=document.description %></td>
+                </tr>
+              <%end%>
+            <% end %>
+          <% end %>          
+          
+        </tbody>
+      </table>
+      
+
+      
+<%end%>

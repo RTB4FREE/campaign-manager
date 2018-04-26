@@ -1,0 +1,38 @@
+
+<% content_for :breadcrumb do %> 
+        <div class="page-header pull-left">
+            <div class="page-title">
+                New Attachment
+            </div>
+        </div>
+        <ol class="breadcrumb page-breadcrumb pull-right">
+            <li><i class="fa fa-home"></i>&nbsp;<a href="/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li><a href="/attachments#">Attachments</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li class="active">New</li>
+        </ol>
+<%end%>
+
+<% content_for :main_body do %> 	
+        <div class="col-md-12"><h3></h3>
+            <div class="panel panel-violet">
+                <div class="panel-heading">
+                    New
+                </div>
+                <div class="panel-body pan">
+                    <%= form_tag 'create', :multipart => true do %>
+                      <%= file_field_tag 'attachment' %>
+                      <%= submit_tag "Send Attachment" %>
+                    <% end %>
+                    <%= link_to 'Back', attachments_path , class:"btn btn-default btn-sm"%>        
+                </div>
+            </div>                            
+        </div>
+
+<%end%>
+
+
+
+
+
+
+

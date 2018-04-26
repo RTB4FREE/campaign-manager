@@ -1,0 +1,91 @@
+<% content_for :breadcrumb do %> 
+       <div class="page-header pull-left">
+            <div class="page-title">
+                Real Time Bidder Dashboard 
+            </div>
+        </div>
+        <ol class="breadcrumb page-breadcrumb pull-right">
+            <li><i class="fa fa-home"></i>&nbsp;<a href="/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li class="active">Dashboard</li>
+        </ol>
+<%end%>
+
+<% content_for :main_body do %> 
+<div class="page-content">
+    <div id="tab-general">
+        <%= form_tag dashboards_home_path, method: "get" do %>        
+            <div class="col-lg-12 pull-left">
+                <button type="submit" class="btn btn-default btn-sm">Refresh</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="load_time"></span>
+                <br/> <br/>
+            </div>
+            <div class="col-lg-4">
+                 <%= render :partial => 'sumlist', 
+                            :locals => {
+                                :values => @totals[:last_hour],
+                                :label => "Last Hour Totals",
+                            } 
+                  %>  
+            </div>
+            <div class="col-lg-4">
+                 <%= render :partial => 'sumlist', 
+                            :locals => {
+                                :values => @totals[:last_8_hours], 
+                                :label => "Last 8 Hours Totals",
+                            }
+                  %>
+            </div>
+            <div class="col-lg-4">        
+                 <%= render :partial => 'sumlist', 
+                            :locals => {
+                                :values => @totals[:last_24_hours],
+                                :label => "Last 24 Hours Totals",
+                            } 
+                  %>       
+            </div>
+
+            <div class="col-lg-12">
+                <%= render :partial => 'campaignalltable', 
+                            :locals => {
+                                :values => @campaigns
+                            }
+                %>  
+            </div>            
+        
+            <% if @campaigns.length>0 %>
+            <div class="col-lg-12">
+                <%= render :partial => 'sumtable', 
+                            :locals => {
+                                :values => @summaries[:last_hour],
+                                :label => "Campaign Summaries - Last Hour",
+                            } 
+                  %>  
+            </div>
+
+            <div class="col-lg-12">
+                <%= render :partial => 'sumtable', 
+                            :locals => {
+                                :values => @summaries[:last_8_hours],
+                                :label => "Campaign Summaries - Last 8 Hours",
+                            } 
+                  %>  
+            </div>
+
+            <div class="col-lg-12">
+                <%= render :partial => 'sumtable', 
+                            :locals => {
+                                :values => @summaries[:last_24_hours],
+                                :label => "Campaign Summaries - Last 24 Hours",
+                            } 
+                  %>  
+            </div>      
+            <% end %>
+            
+        <%end%>
+    </div>
+</div> 
+
+
+
+<%end%>
+

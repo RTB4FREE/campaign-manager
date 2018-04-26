@@ -1,0 +1,163 @@
+<% content_for :breadcrumb do %> 
+        <div class="page-header pull-left">
+            <div class="page-title">
+                Sets</div>
+        </div>
+        <ol class="breadcrumb page-breadcrumb pull-right">
+            <li><i class="fa fa-home"></i>&nbsp;<a href="/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+            <li class="active">Sets</li>
+        </ol>
+<%end%>
+
+
+<% content_for :main_body do %> 
+    <style type="text/css">
+	.hideme,file {
+		display:none;
+	}    
+    </style>     
+	<%= form_tag("/lists", :id=>"list", :method => "get") do %>
+	<div>
+			<div id="uploads_container"></div>
+			<div class="js-progress-bars"></div>
+			<button type="button" class="btn btn-xs btn-info " onclick="document.getElementById('selectedFile').click();"
+			title="Click to upload files from your local computer.
+			You may select multiple files. After uploading, refresh the page to new files in the table. Edit the entry to rename or view properties.
+			">
+				</span><span class="glyphicon glyphicon-plus"></span> Upload local files 
+  			</button>
+  			&nbsp;&nbsp;&nbsp;&nbsp;
+			<button type="submit" class="btn btn-default btn-xs" id="refreshBtn"><span class="glyphicon glyphicon-refresh" title="Refresh page"></span></button>
+
+
+		<% if @lists.count>0 then  %>  
+			<table class="table table-striped table-bordered" id="customer_table" style="width:100%">	
+			<thead>
+			<tr>
+				<th>Name</th>			
+				<th>Set Type</th>
+				<th>Assigned To</th>
+				<th width="3%"></th>
+				<th width="3%"></th>
+				<th width="3%"></th>
+			</tr>
+			</thead>
+			<tbody>
+			 <% @lists.each do |obj|  %>     
+				<tr>
+					<td>
+						<a href="<%=obj["s3_url"]%>" target="_blank" style="color:#0d81bf">
+							<%=obj["name"]%>
+						</a>
+					</td>					
+					<td>
+						<%=obj["list_type"]%>
+					</td>
+					<td> 
+						<% obj.rtb_standards.each do |rule| %>
+							Rule <%=rule.name%> (<%= link_to "ID #{rule.id}", edit_rtb_standard_path(rule)%>)<br/>
+						<%end%>
+						<% obj.targets.each do |target| %>
+							Target <%=target.name%> (<%= link_to "ID #{target.id}", edit_target_path(target)%>)<br/>
+						<%end%>
+					</td>
+
+                    <td><%= link_to 'Show',obj %></td>
+                    <td><%= link_to 'Edit', edit_list_path(obj) %></td>
+                    <td><%= link_to 'Destroy', obj, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+				</tr>
+			<% end %>
+			</tbody>
+			</table>	  
+		<% else %>
+		    <br/><br/>
+			No lists defined. Click on Upload button to add.
+		<% end %>
+	</div>
+	<% end %> <!-- end form -->
+	
+	<%= form_tag("/lists/destroy", :id=>"delete_form", :method => "get") do %>
+		<input id="deleteform_planid" type="hidden" name="id" />
+	<% end %> 	
+	
+	<%= s3_uploader_form callback_url: lists_upload_url,
+		 id: "s3-uploader",
+		 callback_param: "file_url",
+		 callback_method: "POST",
+		 key: "uploads/{timestamp}-{unique_id}-#{SecureRandom.hex}/${filename}",
+         key_starts_with: "uploads/",
+		 class: "hideme" do %>
+  		<%= file_field_tag :file, multiple: true, id:"selectedFile" %>
+  		  				
+		<script id="template-upload" type="text/x-tmpl">
+		<div id="file-{%=o.unique_id%}" class="upload">
+		  {%=o.name%} 
+		  <div class="progress">
+		  	<div class="bar" style="width: 0%; height: 20px; background-color: green;"></div>
+		  </div>
+		</div>
+		</script>
+
+	<% end %>
+
+<% end %>		
+
+
+<% content_for :javascript do %> 	
+ 	<%= javascript_include_tag 'application_s3upload.js' %>
+	<script>
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token',
+                                 $('meta[name="csrf-token"]').attr('content'));
+        }
+    });
+	$(document).ready(function() {
+        $('a[href="' + this.location.pathname + '"]').parents(".tapsidenavitem").addClass('active');         
+		$('#tapin-navbar-header-breadcrumb').append('<li>My Resources</li><li class="active">Media Files</li>');        
+	    $('.btn[type="deleteOneList"]').on('click', function(e) {
+	    	var planid = $(this).attr("value")	;
+	    	var medianame = $(this).closest("tr").find("td").first().text().replace(/^\s+|\s+$/g,"");
+	    	console.log("Setting medianame: "+medianame);
+	        BootstrapDialog.confirm({
+	        	title:"Confirm Delete for Media",
+	            type: BootstrapDialog.TYPE_WARNING,
+	            message: medianame,
+	            btnOKLabel: 'Delete',
+	            callback: function(result){
+	                if (result) {
+						$("#deleteform_planid").val(planid);		// bug using jquery submit input with name=submit  See http://stackoverflow.com/questions/1091321/why-does-jquery-submit-fail-with-an-error		
+						$("#delete_form").submit();		
+	                }
+	            }
+	        });
+	        return false;
+	    });	
+		var DTshowcols =  [
+			{
+				"targets": [0,1,2],
+				"visible": true,
+			    "sortable": true
+			 },					 
+			{
+				"targets": [3,4,5],
+				"visible": true,
+				"sortable": false,
+				"width": "100px"
+			 }
+		]
+		$("#customer_table").dataTable({
+			columnDefs: DTshowcols,
+			order: [[ 0, "asc" ]],
+			autoWidth: true,
+			responsive: false,
+			paging: false,
+			dom: "<<'col-sm-6'f>>" + 
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i><'col-sm-7'p>>"
+		});
+	});	
+	
+	</script>
+<% end %>

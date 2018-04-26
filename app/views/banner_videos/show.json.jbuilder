@@ -1,0 +1,1 @@
+json.partial! "banner_videos/banner_video", banner_video: @banner_video

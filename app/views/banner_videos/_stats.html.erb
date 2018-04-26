@@ -1,0 +1,51 @@
+<table class="table table-striped table-bordered table-hover">
+    <tbody>
+    
+    <% if errors = @banner_video.check_errors and errors.length>0
+            str = errors.join("<br/>")
+    %>              
+        <tr>
+            <td>Status</td>
+            <td><span class="text text-danger"><%=raw(str)%></span></td>
+        </tr>
+    <%end%>
+    <% if false %>
+    <tr>
+        <td>Total Cost</td>
+        <td><%=number_to_currency(@banner_video.total_cost)%></td>
+    </tr>
+    <tr>
+        <td>Daily Cost</td>
+        <td><%==number_to_currency(@banner_video.daily_cost)%></td>
+    </tr>
+    <tr>
+        <td>Hourly Cost</td>
+        <td><%==number_to_currency(@banner_video.hourly_cost)%></td>
+    </tr>
+    <tr>
+        <td>Clicks</td>
+        <td><%=number_with_delimiter(@banner_video.clicks)%></td>
+    </tr>
+    <tr>
+        <td>Pixels</td>
+        <td><%=number_with_delimiter(@banner_video.pixels)%></td>
+    </tr>
+    <tr>
+        <td>Wins</td>
+        <td><%=number_with_delimiter(@banner_video.wins)%></td>
+    </tr>
+    <tr>
+        <td>Bids</td>
+        <td><%=number_with_delimiter(@banner_video.bids)%></td>
+    </tr>
+    <%end%>
+    <tr>
+        <td>Last updated</td>
+        <td><%=@banner_video.updated_at%></td>
+    </tr>
+    <tr>
+        <td>Created</td>
+        <td><%=@banner_video.created_at%></td>
+    </tr>
+    </tbody>
+</table> 

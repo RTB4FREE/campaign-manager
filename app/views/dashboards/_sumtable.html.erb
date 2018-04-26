@@ -1,0 +1,46 @@
+
+<div class="panel panel-yellow">
+    <div class="panel-heading"><%=label%></div>
+    <div class="panel-body">
+    
+        <% if values and values.length>0 %>
+    
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Campaign</th>
+                    <th></th>
+                    <th>Clicks</th>
+                    <th>Pixels</th>
+                    <th>Wins</th>
+                    <th>Bids</th>
+                    <th>Win Price</th>
+                    <th>Bid Price</th>
+                </tr>
+                </thead>
+                <tbody>
+    
+            <%  values.each do |sum| %>
+                <tr> 
+                     <% if camp = Campaign.find_by_id(sum[:campaign_id]) %>
+                        <td><%=camp.name%></td>
+                    <%else%>
+                        <td>ID <%=sum[:campaign_id]%></td>                        
+                    <%end%>  
+                    <td></td>
+                    <td><%=number_with_delimiter(sum[:clicks])%></td>
+                    <td><%=number_with_delimiter(sum[:pixels])%></td>
+                    <td><%=number_with_delimiter(sum[:wins])%></td>
+                    <td><%=number_with_delimiter(sum[:bids])%></td>
+                    <td><%=number_to_currency(sum[:win_price])%></td>
+                    <td><%=number_to_currency(sum[:bid_price])%></td>
+                </tr>
+            <%end%>
+                </tbody>
+            </table>
+        <% else %>
+            <p>No activity</p>
+        <%end%>
+    </div>
+</div>
+

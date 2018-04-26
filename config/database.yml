@@ -1,0 +1,20 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  port: <%=RTB4FREE_DATABASE_PORT%>
+  host: <%=RTB4FREE_DATABASE_HOST%>
+  database: <%=RTB4FREE_DATABASE_NAME%>
+  username: <%=RTB4FREE_DATABASE_USERNAME%>
+  password: <%=RTB4FREE_DATABASE_PASSWORD%>
+
+development:
+  <<: *default
+  reconnect: true
+  pool: 10
+  
+test:
+  <<: *default
+
+production:
+  <<: *default
+  reconnect: true  

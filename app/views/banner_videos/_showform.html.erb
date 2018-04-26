@@ -1,0 +1,86 @@
+<%= bootstrap_form_for(@banner_video,layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-10") do |f| %>
+  <% if @banner_video.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@banner_video.errors.count, "error") %> prohibited this banner video from being saved:</h2
+      <ul>
+      <% @banner_video.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%  
+      if @banner_video[:campaign_id] and camp = Campaign.find(@banner_video[:campaign_id])
+          campname = camp.name
+      else
+         campname = "" 
+      end
+  %>
+   <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => campname, 
+                :label => "Campaign",
+            } 
+  %>
+  <%= f.text_field :id, label: "Video ID" , class: "input-sm" , readonly: true %>
+  <%= f.text_field :name, label: "Video Name" , class: "input-sm" , readonly: true %>
+  <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @banner_video[:interval_start], 
+                :label => "Interval Start",
+            } 
+  %>  
+
+ <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @banner_video[:interval_end], 
+                :label => "Interval End",
+            } 
+  %>  
+  <%= f.number_field :vast_video_width, append: "pixels", input_group_class: 'input-group-sm', readonly: true %>
+  <%= f.number_field :vast_video_height, append: "pixels", input_group_class: 'input-group-sm', readonly: true %>
+  <%= f.text_field :width_range, class: 'input-sm', readonly: true %>
+  <%= f.text_field :height_range, class: 'input-sm', readonly: true %>
+  <%= f.text_field :width_height_list, class: 'input-sm', readonly: true %>
+  <%= f.number_field :bid_ecpm, prepend: "$", input_group_class: 'input-group-sm', readonly: true %>  
+  <%= f.text_field :deals, class: 'input-sm', readonly: true %>  
+  <%= f.number_field :bitrate, append: "kbps", input_group_class: 'input-group-sm', readonly: true %> 
+  <%= f.text_field :mime_type, label: "MIME Type" , class: "input-sm" , readonly: true %>
+ <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @banner_video[:vast_video_linerarity], 
+                :label => "Vast Video Linerarity",
+            } 
+  %>
+  <%= f.number_field :vast_video_duration, append: "seconds" , readonly: true, class: "input-sm" %>
+ <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @banner_video[:vast_video_type], 
+                :label => "Vast Video Type",
+            } 
+  %> 
+  <%= f.text_area :vast_video_outgoing_file, readonly: true, class: "input-sm"   %>  
+  
+  <%= f.number_field :hourly_budget, prepend: "$", input_group_class: 'input-group-sm', readonly: true %>
+  <%= f.number_field :daily_budget, prepend: "$", input_group_class: 'input-group-sm', readonly: true %>
+  <%= f.number_field :total_basket_value, prepend: "$", input_group_class: 'input-group-sm', readonly: true %>
+  
+  <%= f.text_field :frequency_spec,  readonly: true  , class: "input-sm"%>
+  <%= f.number_field :frequency_expire, append: "minutes" , readonly: true , input_group_class: 'input-group-sm'%>
+  <%= f.number_field :frequency_count, readonly: true , class: "input-sm"%>
+
+  <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @banner_video.rtb_standards.collect{|i| "#{i.id}" }.join(", "), 
+                :label => "Rule IDs",
+            } 
+  %>   
+  <%= render :partial => 'showform_textrow', 
+            :locals => {
+                :value => @banner_video.exchange_attributes.collect{|i| "#{i.name}=#{i.value}" }.join(", "), 
+                :label => "Exchange Attributes",
+            } 
+  %>
+
+  
+<% end %>
