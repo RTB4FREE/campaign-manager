@@ -7,7 +7,7 @@ unless Rails.env.production?
     connection.execute("TRUNCATE #{table}") unless table == "schema_migrations"
   end
 
-  sql = File.read('db/rtb4free_demo_base.sql')
+  sql = File.read('db/rtb4free_demo_base_04-18-2018.sql')
   statements = sql.split(/;$/)
   statements.pop
 
