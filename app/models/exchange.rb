@@ -375,7 +375,8 @@ class Exchange < ActiveRecord::Base
             },
             { name: "pokkt" },
             { name: "pubnative" },
-            { name: "ventuno" }
+            { name: "ventuno" },
+            { name: "openssp" }
         ].sort_by{|i| i[:name] }
     end
    
