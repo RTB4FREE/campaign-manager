@@ -32,6 +32,7 @@ namespace :bidagg do
         else
           running!(name)
           begin
+            ReportAggregation.campaignPerformance3
             ReportAggregation.campaignTableSpendUpdate
           rescue Exception => e  
             puts e.message  

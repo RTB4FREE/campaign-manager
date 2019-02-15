@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.5'
+gem 'rails', '4.2.11'
 # Use sqlite3 as the database for Active Record
 #gem 'sqlite3'
 # Use SCSS for stylesheets
@@ -32,13 +32,23 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem "nokogiri", ">= 1.8.5"
+gem "sprockets", ">= 3.7.2"
+gem "activejob", ">= 4.2.11"
+gem "rack", ">= 1.6.11"
+gem "rails-html-sanitizer", ">= 1.0.4"
+gem "loofah", ">= 2.2.3"
+gem "actionview", ">= 4.2.7.1"
+gem "activerecord", ">= 4.2.7.1"
+
 
 gem "mysql2"
 gem 'bootstrap_form'
 gem 'bcrypt', '~> 3.1.7'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
-gem "elasticsearch"
+# elasticsearch gem version must match your elasticsearch version.
+gem "elasticsearch", '>= 6'
 gem 'puma'
 gem 'aws-sdk'
 gem 's3_direct_upload'

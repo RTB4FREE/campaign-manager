@@ -376,7 +376,23 @@ class Exchange < ActiveRecord::Base
             { name: "pokkt" },
             { name: "pubnative" },
             { name: "ventuno" },
-            { name: "openssp" }
+            { name: "openssp" },
+            { name: "bidswitch",
+                attributes: [
+                    {
+                        name: "advertiser_name",
+                        label: "Advertiser Name",
+                        value: "",
+                        form_type: "input"
+                    },
+                    {
+                        name: "agency_name",
+                        label: "Agency Name",
+                        value: "",
+                        form_type: "input"
+                    }
+                ]
+            }
         ].sort_by{|i| i[:name] }
     end
    
