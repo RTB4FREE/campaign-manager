@@ -390,6 +390,12 @@ class Exchange < ActiveRecord::Base
                         label: "Agency Name",
                         value: "",
                         form_type: "input"
+                    },
+                    {
+                        name: "categories",
+                        label: "Categories",
+                        value: "",
+                        form_type: "input"
                     }
                 ]
             }
