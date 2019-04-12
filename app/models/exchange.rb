@@ -398,7 +398,8 @@ class Exchange < ActiveRecord::Base
                         form_type: "input"
                     }
                 ]
-            }
+            },
+            { name: "mobfox" }
         ].sort_by{|i| i[:name] }
     end
    
