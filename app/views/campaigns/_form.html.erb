@@ -67,7 +67,7 @@
   <%= f.number_field :budget_limit_daily, prepend: "$", input_group_class: 'input-group-sm' %>
   <%= f.number_field :total_budget, prepend: "$", input_group_class: 'input-group-sm' %>
   
-  <%= f.form_group :forensiq, label: { text: "Forensiq" } do %>
+  <%= f.form_group :forensiq, label: { text: "Fraud Detection" } do %>
     <%= f.radio_button :forensiq, :yes, label: "Yes" %>
     <%= f.radio_button :forensiq, :no, label: "No" %>
   <% end %>
