@@ -5,10 +5,10 @@
 [![](https://images.microbadger.com/badges/image/rtb4free/campaign-manager.svg)](https://microbadger.com/images/rtb4free/campaign-manager "Get your own image badge on microbadger.com")
 [![Build Status](https://travis-ci.org/rtb4free/campaignmanager.svg?branch=master)](https://travis-ci.org/rtb4free/campaignmanager)
 
-RTB4Free campaign-manager
-=========================
+Campaign Manager - RTB4FREE Campaign Management UI
+==================================================
 
-Campaign management UI for [RTB4Free](http://rtb4free.com/)
+Campaign management user interface for [RTB4Free](http://rtb4free.com/)
 
 An image of this repo is available directly from [Docker Hub](https://hub.docker.com/r/rtb4free/campaign-manager/)
 
@@ -87,7 +87,7 @@ The campaign manager can be deployed using Docker Compose.  The default `docker-
 ```
 docker-compose up -d
 ```
-This will run a docker container and expose port 3000.
+This will run a docker container and expose the service on port 3000.
 
 To stop the container, run the command:
 
