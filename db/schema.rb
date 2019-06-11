@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170511221000) do
+ActiveRecord::Schema.define(version: 20190611202618) do
 
   create_table "attachments", force: :cascade do |t|
     t.string   "filename",     limit: 255
@@ -168,11 +168,11 @@ ActiveRecord::Schema.define(version: 20170511221000) do
     t.string "capital",                  limit: 255
     t.string "iso_4217_currency_code",   limit: 255
     t.string "iso_4217_currency_name",   limit: 255
-    t.string "itu-t_telephone_code",     limit: 255
-    t.string "iso_3166-1_2_letter_code", limit: 255
-    t.string "iso_3166-1_3_letter_code", limit: 255
-    t.string "iso_3166-1_number",        limit: 255
+    t.string "iso_3166_1_2_letter_code", limit: 255
+    t.string "iso_3166_1_3_letter_code", limit: 255
+    t.string "iso_3166_1_number",        limit: 255
     t.string "iana_country_code_tld",    limit: 255
+    t.string "itu_t_telephone_code",     limit: 255
   end
 
   create_table "documents", force: :cascade do |t|
