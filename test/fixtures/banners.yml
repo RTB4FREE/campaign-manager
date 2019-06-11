@@ -4,8 +4,8 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+one:
+  interval_start: '2019-06-10 23:00:00'
+
+two:
+  interval_start: '2019-06-10 23:00:00'

@@ -4,10 +4,10 @@ one:
   name: MyString
   email: MyString
   password_digest: MyString
-  admin: MyString
+#  admin: false
 
 two:
   name: MyString
   email: MyString
   password_digest: MyString
-  admin: MyString
+#  admin: false

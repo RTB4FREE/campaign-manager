@@ -1,20 +1,30 @@
 default: &default
   adapter: mysql2
   encoding: utf8
-  port: <%=RTB4FREE_DATABASE_PORT%>
-  host: <%=RTB4FREE_DATABASE_HOST%>
-  database: <%=RTB4FREE_DATABASE_NAME%>
-  username: <%=RTB4FREE_DATABASE_USERNAME%>
-  password: <%=RTB4FREE_DATABASE_PASSWORD%>
+  pool: 5
+  socket: /tmp/mysql.sock
+  reconnect: true
 
 development:
   <<: *default
-  reconnect: true
-  pool: 10
-  
+  port: 3306
+  host: localhost
+  database: rtb4free
+  username: root
+  password:
+
 test:
   <<: *default
+  port: 3306
+  host: localhost
+  database: rtb4free_test
+  username: root
+  password:
 
 production:
   <<: *default
-  reconnect: true  
+  port: <%= ENV['RTB4FREE_DATABASE_PORT'] %>
+  host: <%= ENV['RTB4FREE_DATABASE_HOST'] %>
+  database: <%= ENV['RTB4FREE_DATABASE_NAME'] %>
+  username: <%= ENV['RTB4FREE_DATABASE_USERNAME'] %>
+  password: <%= ENV['RTB4FREE_DATABASE_PASSWORD'] %>
