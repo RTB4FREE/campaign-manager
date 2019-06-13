@@ -5,41 +5,50 @@
 # To create database
 #       docker-compose run web rake db:setup
 #
-version: '3'
+version: '3.5'
+
 services:
+
   db:
-    image: mysql/mysql-server:5.7
+    image: mysql:5.7
+    # Uncheck the volumes data if you want to save the data when you bring down the docker conatiner
+    volumes:
+      - db_data:/var/lib/mysql
     ports:
-    - "3306:3306"
+      - '3306:3306'
+    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=rtb4free
       - MYSQL_DATABASE=rtb4free
-      - MYSQL_USER=ben
-      - MYSQL_PASSWORD=test
-    volumes:
-      - ./db/rtb4free_demo_base_01-23-2018.sql:/docker-entrypoint-initdb.d/rtbdemo.sql
+      - MYSQL_USER=rtb4free
+      - MYSQL_PASSWORD=rtb4free
     networks:
-      - rtb_net
+      - r4f_net
+
   web:
-    image: ploh/rtbadmin_open
-    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    image: rtb4free/campaign-manager
     ports:
       - "3000:3000"
     environment:
       - CUSTOMER_NAME=RTB4FREE
-      - RTB4FREE_DATABASE_HOST=db
-      - RTB4FREE_DATABASE_PORT=3306
-      - RTB4FREE_DATABASE_USERNAME=ben
-      - RTB4FREE_DATABASE_PASSWORD=test
-      - RTB4FREE_DATABASE_NAME=rtb4free
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USERNAME=rtb4free
+      - DB_PASSWORD=rtb4free
+      - DB_NAME=rtb4free
       - ELASTICSEARCH_ENABLE=false
       - ELASTICSEARCH_HOST=
       - ELASTICSEARCH_KIBANA_URL=
     depends_on:
       - db
     networks:
-      - rtb_net
-      
+      - r4f_net
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+
+# Uncheck the volumes data if you want to save the data when you bring down the docker conatiner
+volumes:
+  db_data: {}
+
 networks:
-  rtb_net:
-    external: true      
+  r4f_net:
+    name: rtb4free_network

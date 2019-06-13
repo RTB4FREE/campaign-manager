@@ -64,7 +64,7 @@ rails s
 Docker Image
 ------------
 
-RTB4Free campaign manager can be deployed as a Docker container.
+RTB4Free campaign manager can be deployed using Docker.
 
 Build the Docker image:
 
@@ -85,9 +85,10 @@ Docker Deployment
 The campaign manager can be deployed using Docker Compose.  The default `docker-compose.yml` is included in the root directory, and it can be modified to suit your needs.  To deploy the campaign manager using Docker Compose, run this from the root directory of this repo:
 
 ```
+docker-compose run web bundle exec rake db:setup
 docker-compose up -d
 ```
-This will run a docker container and expose the service on port 3000.
+This will run a Docker container, initialize the database and expose the service on port 3000.
 
 To stop the container, run the command:
 
