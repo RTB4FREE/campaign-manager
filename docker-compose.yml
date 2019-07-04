@@ -1,9 +1,9 @@
 #
-# Execute command to start mysql and rails:
-#       docker-compose up
-#
 # To create database
 #       docker-compose run web rake db:setup
+#
+# Execute command to start mysql and rails:
+#       docker-compose up
 #
 version: '3.5'
 
@@ -11,7 +11,6 @@ services:
 
   db:
     image: mysql:5.7
-    # Uncheck the volumes data if you want to save the data when you bring down the docker conatiner
     volumes:
       - db_data:/var/lib/mysql
     ports:
@@ -45,7 +44,6 @@ services:
       - r4f_net
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
 
-# Uncheck the volumes data if you want to save the data when you bring down the docker conatiner
 volumes:
   db_data: {}
 

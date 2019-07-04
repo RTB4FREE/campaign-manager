@@ -3,7 +3,7 @@
 [![Docker Stars](https://img.shields.io/docker/stars/rtb4free/campaign-manager.svg)](https://hub.docker.com/r/rtb4free/campaign-manager/)
 [![](https://images.microbadger.com/badges/version/rtb4free/campaign-manager.svg)](https://microbadger.com/images/rtb4free/campaign-manager "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/image/rtb4free/campaign-manager.svg)](https://microbadger.com/images/rtb4free/campaign-manager "Get your own image badge on microbadger.com")
-[![Build Status](https://travis-ci.org/rtb4free/campaignmanager.svg?branch=master)](https://travis-ci.org/rtb4free/campaignmanager)
+[![Build Status](https://travis-ci.org/rtb4free/campaign-manager.svg?branch=master)](https://travis-ci.org/rtb4free/campaign-manager)
 
 Campaign Manager - RTB4FREE Campaign Management UI
 ==================================================
@@ -69,13 +69,14 @@ RTB4Free campaign manager can be deployed using Docker.
 Build the Docker image:
 
 ```
-docker build -t rtb4free/campaign-manager:latest -t rtb4free/campaign-manager:3.3 .
+docker build -t rtb4free/campaign-manager:latest -t rtb4free/campaign-manager:1 -t rtb4free/campaign-manager:1.0 .
 ```
 
 To push to the image to the RTB4Free repo in Docker:
 
 ```
-docker push rtb4free/campaign-manager:3.3
+docker push rtb4free/campaign-manager:1.0
+docker push rtb4free/campaign-manager:1
 docker push rtb4free/campaign-manager:latest
 ```
 
