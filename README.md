@@ -31,8 +31,8 @@ To start working with code, first make sure you have the following installed on 
 Next, get the code from this Github repo:
 
 ```
-git clone git@github.com:RTB4FREE/campaignmanager.git
-cd campaignmanager
+git clone git@github.com:RTB4FREE/campaign-manager.git
+cd campaign-manager
 ```
 
 The RTB4Free campaign manager is a standard [Rails 4.x application](http://guides.rubyonrails.org/v4.2/), and can be installed and managed in the standard Rails fashion:
@@ -59,45 +59,6 @@ Start the server:
 
 ```
 rails s
-```
-
-Docker Image
-------------
-
-RTB4Free campaign manager can be deployed using Docker.
-
-Build the Docker image:
-
-```
-docker build -t rtb4free/campaign-manager:latest -t rtb4free/campaign-manager:1 -t rtb4free/campaign-manager:1.0 .
-```
-
-To push to the image to the RTB4Free repo in Docker:
-
-```
-docker push rtb4free/campaign-manager:1.0
-docker push rtb4free/campaign-manager:1
-docker push rtb4free/campaign-manager:latest
-```
-
-*Note: Dockerhub automatically builds this container when code gets pushed to this Github repo*
-
-
-Docker Deployment
------------------
-
-The campaign manager can be deployed using Docker Compose.  The default `docker-compose.yml` is included in the root directory, and it can be modified to suit your needs.  To deploy the campaign manager using Docker Compose, run this from the root directory of this repo:
-
-```
-docker-compose run web bundle exec rake db:setup
-docker-compose up -d
-```
-This will run a Docker container, initialize the database and expose the service on port 3000.
-
-To stop the container, run the command:
-
-```
-docker-compose down
 ```
 
 Using Campaign Manager
