@@ -112,29 +112,33 @@ ActiveRecord::Schema.define(version: 20190611202618) do
   create_table "campaigns", force: :cascade do |t|
     t.datetime "activate_time"
     t.datetime "expire_time"
-    t.decimal  "cost",                              precision: 15, scale: 6
-    t.string   "ad_domain",           limit: 1024
-    t.integer  "clicks",              limit: 4
-    t.integer  "pixels",              limit: 4
-    t.integer  "wins",                limit: 4
-    t.integer  "bids",                limit: 4
-    t.string   "name",                limit: 1024
-    t.string   "status",              limit: 1024
-    t.string   "conversion_type",     limit: 1024
-    t.decimal  "budget_limit_daily",                precision: 15, scale: 6
-    t.decimal  "budget_limit_hourly",               precision: 15, scale: 6
-    t.decimal  "total_budget",                      precision: 15, scale: 6
-    t.decimal  "bid",                               precision: 15, scale: 6
-    t.text     "shard",               limit: 65535
-    t.text     "forensiq",            limit: 65535
-    t.decimal  "daily_cost",                        precision: 15, scale: 6
+    t.decimal  "cost",                                  precision: 15, scale: 6
+    t.string   "ad_domain",               limit: 1024
+    t.integer  "clicks",                  limit: 4
+    t.integer  "pixels",                  limit: 4
+    t.integer  "wins",                    limit: 4
+    t.integer  "bids",                    limit: 4
+    t.string   "name",                    limit: 1024
+    t.string   "status",                  limit: 1024
+    t.string   "conversion_type",         limit: 1024
+    t.decimal  "budget_limit_daily",                    precision: 15, scale: 6
+    t.decimal  "budget_limit_hourly",                   precision: 15, scale: 6
+    t.decimal  "total_budget",                          precision: 15, scale: 6
+    t.decimal  "bid",                                   precision: 15, scale: 6
+    t.text     "shard",                   limit: 65535
+    t.text     "forensiq",                limit: 65535
+    t.decimal  "daily_cost",                            precision: 15, scale: 6
     t.datetime "updated_at"
     t.datetime "deleted_at"
     t.datetime "created_at"
-    t.decimal  "hourly_cost",                       precision: 15, scale: 6
-    t.string   "exchanges",           limit: 255
-    t.string   "regions",             limit: 255
-    t.integer  "target_id",           limit: 4
+    t.decimal  "hourly_cost",                           precision: 15, scale: 6
+    t.string   "exchanges",               limit: 255
+    t.string   "regions",                 limit: 255
+    t.integer  "target_id",               limit: 4
+    t.string   "frequency_spec",          limit: 255
+    t.integer  "frequency_expire",        limit: 4
+    t.integer  "frequency_count",         limit: 4
+    t.string   "frequency_interval_type", limit: 10,                                              default: 'minutes'
   end
 
   create_table "campaigns_rtb_standards", id: false, force: :cascade do |t|
