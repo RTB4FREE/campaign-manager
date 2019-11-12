@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20190611202618) do
     t.text     "frequency_spec",           limit: 65535
     t.integer  "frequency_expire",         limit: 4
     t.integer  "frequency_count",          limit: 4
+    t.string   "frequency_interval_type",  limit: 10,                                              default: 'minutes'
     t.datetime "created_at",                                                                       null: false
     t.datetime "updated_at",                                                                       null: false
     t.decimal  "hourly_budget",                             precision: 15, scale: 6
@@ -67,36 +68,37 @@ ActiveRecord::Schema.define(version: 20190611202618) do
   add_index "banner_videos_rtb_standards", ["rtb_standard_id"], name: "index_banner_videos_rtb_standards_on_rtb_standard_id", using: :btree
 
   create_table "banners", force: :cascade do |t|
-    t.integer  "campaign_id",        limit: 4
-    t.datetime "interval_start",                                               null: false
+    t.integer  "campaign_id",             limit: 4
+    t.datetime "interval_start",                                                    null: false
     t.datetime "interval_end"
-    t.decimal  "total_basket_value",                  precision: 15, scale: 6
-    t.integer  "width",              limit: 4
-    t.integer  "height",             limit: 4
-    t.decimal  "bid_ecpm",                            precision: 15, scale: 6
-    t.decimal  "total_cost",                          precision: 15, scale: 6
-    t.string   "contenttype",        limit: 1024
-    t.string   "iurl",               limit: 1024
-    t.text     "htmltemplate",       limit: 16777215
-    t.integer  "bids",               limit: 4
-    t.integer  "clicks",             limit: 4
-    t.integer  "pixels",             limit: 4
-    t.integer  "wins",               limit: 4
-    t.decimal  "daily_budget",                        precision: 15, scale: 6
-    t.decimal  "hourly_budget",                       precision: 15, scale: 6
-    t.decimal  "daily_cost",                          precision: 15, scale: 6
-    t.integer  "target_id",          limit: 4
-    t.datetime "created_at",                                                   null: false
-    t.datetime "updated_at",                                                   null: false
-    t.string   "name",               limit: 255
-    t.string   "frequency_spec",     limit: 255
-    t.integer  "frequency_expire",   limit: 4
-    t.integer  "frequency_count",    limit: 4
-    t.decimal  "hourly_cost",                         precision: 15, scale: 6
-    t.string   "deals",              limit: 255
-    t.string   "width_range",        limit: 255
-    t.string   "height_range",       limit: 255
-    t.string   "width_height_list",  limit: 255
+    t.decimal  "total_basket_value",                       precision: 15, scale: 6
+    t.integer  "width",                   limit: 4
+    t.integer  "height",                  limit: 4
+    t.decimal  "bid_ecpm",                                 precision: 15, scale: 6
+    t.decimal  "total_cost",                               precision: 15, scale: 6
+    t.string   "contenttype",             limit: 1024
+    t.string   "iurl",                    limit: 1024
+    t.text     "htmltemplate",            limit: 16777215
+    t.integer  "bids",                    limit: 4
+    t.integer  "clicks",                  limit: 4
+    t.integer  "pixels",                  limit: 4
+    t.integer  "wins",                    limit: 4
+    t.decimal  "daily_budget",                             precision: 15, scale: 6
+    t.decimal  "hourly_budget",                            precision: 15, scale: 6
+    t.decimal  "daily_cost",                               precision: 15, scale: 6
+    t.integer  "target_id",               limit: 4
+    t.datetime "created_at",                                                        null: false
+    t.datetime "updated_at",                                                        null: false
+    t.string   "name",                    limit: 255
+    t.string   "frequency_spec",          limit: 255
+    t.integer  "frequency_expire",        limit: 4
+    t.integer  "frequency_count",         limit: 4
+    t.string   "frequency_interval_type", limit: 10,                                              default: 'minutes'
+    t.decimal  "hourly_cost",                              precision: 15, scale: 6
+    t.string   "deals",                   limit: 255
+    t.string   "width_range",             limit: 255
+    t.string   "height_range",            limit: 255
+    t.string   "width_height_list",       limit: 255
   end
 
   create_table "banners_rtb_standards", id: false, force: :cascade do |t|
