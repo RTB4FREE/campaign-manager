@@ -138,7 +138,8 @@ ActiveRecord::Schema.define(version: 20190611202618) do
     t.string   "frequency_spec",          limit: 255
     t.integer  "frequency_expire",        limit: 4
     t.integer  "frequency_count",         limit: 4
-    t.string   "frequency_interval_type", limit: 10,                                              default: 'minutes'
+    t.string   "frequency_interval_type", limit: 10,                                default: 'minutes'
+    t.string   "categories",              limit: 100
   end
 
   create_table "campaigns_rtb_standards", id: false, force: :cascade do |t|
